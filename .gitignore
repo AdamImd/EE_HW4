@@ -1,0 +1,16 @@
+# Latex 
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.nav
+*.snm
+*.vrb
+
+*.pt
+
+
+LaTeX/tmp
