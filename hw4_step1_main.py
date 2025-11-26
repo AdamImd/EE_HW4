@@ -38,6 +38,7 @@ class Config:
         self.parser.add_argument('--zeta_ilvr', type=float, default=0.8, help='ILVR weighting parameter (tune heuristically)')
         self.parser.add_argument('--zeta_mcg', type=float, default=0.5, help='MCG gradient step weighting parameter (tune heuristically)')
         self.parser.add_argument('--zeta_ddnm', type=float, default=1.0, help='DDNM data consistency weighting parameter (tune heuristically)')
+        self.parser.add_argument('--zeta_dps', type=float, default=1.0, help='DPS gradient step weighting parameter (tune heuristically)')
         
         # hyperparameters for the inpainting mask & SR
         self.parser.add_argument('--mask_type', type=str, default="box", help='box or random')
@@ -204,8 +205,38 @@ class posterior_samplers():
     def dps(self, x_t, t, model_t, measurement, A_funcs):
         ############################
         # TODO: Implement DPS based on the HW PDF description
+        # DPS is like MCG but without the final projection step (for stability with noisy measurements)
+        # DPS update: x'_{t-1} = x_{t-1} - ζ_DPS * ∇_{x_t} ||y - A*x̂_0|t||^2
         ############################
-        x_t_prev = None
+        
+        # Enable gradient computation for x_t to compute the gradient step
+        x_t_grad = x_t.detach().requires_grad_(True)
+        
+        # Step 1: Get model output (predicted noise)
+        model_output = self.score_model(x_t_grad, model_t)
+        model_output, _ = torch.split(model_output, x_t_grad.shape[1], dim=1)
+        
+        # Step 2: Predict x0_hat from x_t (Tweedie denoised estimate)
+        x0_hat = self.predict_x0_hat(x_t_grad, t, model_output)
+        
+        # Step 3: Compute the data fidelity loss ||y - A*x̂_0||^2
+        residual = measurement - A_funcs.A(x0_hat)
+        loss = torch.sum(residual ** 2)
+        
+        # Step 4: Compute gradient w.r.t. x_t
+        grad = torch.autograd.grad(loss, x_t_grad)[0]
+        
+        # Step 5: DDIM sampling to get x'_{t-1} (without gradient tracking)
+        with torch.no_grad():
+            model_output_detached = model_output.detach()
+            x0_hat_detached = x0_hat.detach()
+            x_t_prev_prime = self.sample_ddim(x_t.detach(), t, x0_hat_detached, model_output_detached)
+            
+            # Step 6: DPS update (no projection step, just gradient descent for stability with noise)
+            # x_{t-1} = x'_{t-1} - ζ_DPS * ∇_{x_t} ||y - A*x̂_0||^2
+            zeta_dps = self.conf.zeta_dps
+            x_t_prev = x_t_prev_prime - zeta_dps * grad.detach()
+        
         return x_t_prev
         
 def main():
