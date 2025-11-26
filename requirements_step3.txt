@@ -1,0 +1,22 @@
+# Requirements for HW4 Step 3: Stable Diffusion
+# Install with: pip install -r requirements_step3.txt
+
+# Core dependencies
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.21.0
+Pillow>=9.0.0
+
+# Hugging Face libraries
+diffusers>=0.21.0
+transformers>=4.30.0
+accelerate>=0.20.0
+
+# For visualization
+matplotlib>=3.5.0
+
+# Optional: Memory efficient attention
+# xformers>=0.0.20  # Uncomment if you want faster generation on NVIDIA GPUs
+
+# For reproducibility
+safetensors>=0.3.0
