@@ -12,5 +12,10 @@
 
 *.pt
 
+*.pdf
+
+__pycache__/
 
 LaTeX/tmp
+
+step1_utils/data

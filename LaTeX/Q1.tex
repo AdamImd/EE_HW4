@@ -1,0 +1,148 @@
+\subsection{Posterior Samplers for Inverse Problems}
+% Step 1 (35 points): Posterior Samplers for Inverse Problems
+% Your first task is to implement and compare different posterior sampling methods for solving
+% inverse problems using a pre-trained ADM model1 (Dhariwal & Nichol, 2021) from HW3.
+% However, unlike unconditional generation in HW3, posterior sampling aims to reconstruct an
+% image that is both consistent with a given measurement (e.g., noisy masked or low resolution
+% image) and plausible under the learned data prior.
+% To help you get started, we have provided the skeleton code for restoration (hw4 step1 main.py)
+% along with the ADM model codes and some helper functions (utils.py) under the folder
+% step1 utils. Make sure to check the lines with the #TODO flag inside the hw4 step1 main.py
+% file in order to complete the code. Some pointers about the model and code:
+% † We have provided the CelebA-HQ and ImageNet pretrained ADM checkpoints (click).
+% Please download these .pt files and place them under "./step1 utils/models/".
+% 1https://github.com/openai/guided-diffusion
+% 1
+% † This code builds upon the unconditional generation framework from HW3 and uses the
+% same ADM backbone, but trained on a different dataset. In this step, you will extend
+% that framework from pure image generation to posterior sampling, where the diffusion
+% model is conditioned on measurement consistency. Therefore, most of the information
+% from the ADM setup in HW3 remains applicable.
+% Algorithm 1 Posterior Sampling Strategies
+% Require: T, y, { ˜σi}T
+% i=1, η
+% 1: xT ∼ N (0, I)
+% 2: for t = T, ..., 1 do
+% 3: ˆx0|t ← 1√ ¯αt · (xt − ˆϵθ(xt, t)√1 − ¯αt) ▷ Tweedie denoised estimate
+% 4: x′
+% t−1 ∼ p(xt−1|xt, ˆx0|t) ▷ DDIM sampling
+% 5: xt−1 ← Projection or gradient update via x′
+% t−1 and ˆx0|t to get closer to {x|y = Ax}
+% 6: end for
+% 7: return x0
+% Figure 2: Four degradations that will be covered in this HW. You can change the box
+% indices as long as you keep it 128×128 and at least 10 pixels away from the edges.
+% For this step, your goals are:
+
+\subsubsection{A: Predict $\hat{x_0}$ and sample ddim}
+% (a) [4 pts] Implement predict x0 hat() and sample ddim() functions, effectively repro-
+% ducing Alg. 1 excluding line 5, to ensure you can perform unconditional sampling from
+% both pretrained ADM models. Use η = 1.0 throughout this assignment, thereby im-
+% plementing the DDPM variant. Run the sampling process for 1000 steps and present
+% five different samples from each network in a 2 × 5 grid.
+% 2
+
+
+
+\subsubsection{B: Implement and compare posterior samplers}
+% (b) [8 pts] As discussed in the class, earlier attempts focused on direct projections onto
+% the constraint set. For example, Iterative Latent Variable Refinement (ILVR) (Choi
+% et al., 2021) which is initially proposed for super-resolution (SR) tasks considers the
+% following update for line 5 (Alg. 1):
+% xt−1 = x′
+% t−1 + ζILVR · A†(yt−1 − Ax′
+% t−1),
+% where ζILVR is the weighting parameter, A† is the left-pseudoinverse of the forward
+% operator, and yt−1 ∼ q(yt−1|y0).
+% • Select 3 images from each dataset’s validation set provided to you (click) and
+% place them in their corresponding folders under "./step1 utils/data/". Note:
+% Their pre-trained networks are different so do not forget to change the --dataset
+% parser for the correct network prior. Also do not forget to have some fun so choose
+% the celebrities you know! Let’s see if you can recognize them after reconstruction!
+% • Implement the q sample() function to perform the forward noising process de-
+% fined as q(xt−1 | x0) = N (xt−1; √¯αt−1 x0, (1 − ¯αt−1)I).
+% • Implement the ilvr() function to perform ILVR’s ∇xt p(y|x) update. Use the
+% implemented q sample() function to obtain the noisy measurements yt−1.
+% • Perform image restoration for the following inverse problem tasks: (i) SR×4, (ii)
+% SR×8, (iii) 80% random inpainting, and (iv) 128×128 box inpainting. Assume
+% σy = 0 and use 1000 sampling steps. Tune ζILVR heuristically for best per-
+% formance, and report reference, measurement, and reconstruction for each image
+% along with their corresponding PSNR, SSIM, and LPIPS metrics. Note:
+% These degradations are already defined for you. You only need to change them
+% from parser operations.
+% • Discuss the observed performance and report the restoration time per image.
+% Do you obtain similar results for inpainting tasks as for super-resolution tasks? If
+% not, why might that be the case?
+
+
+
+\subsubsection{C: Manifold Constrained Gradient (MCG)}  
+% (c) [6 pts] Manifold Constrained Gradient (MCG) (Chung et al., 2022) improves upon
+% ILVR by first taking a gradient step along the manifold followed by a projection step
+% similar to ILVR (but with A⊤ instead of A†):
+% ˜xt−1 = x′
+% t−1 − ζMCG · ∇xt ||y − Aˆx0|t||2
+% xt−1 = x′
+% t−1 + A⊤(yt−1 − A˜xt−1)
+% • Implement the mcg() function and perform image restoration for the following
+% inverse problem tasks: (i) SR×4, (ii) SR×8, (iii) 80% random inpainting, and
+% (iv) 128×128 box inpainting. Assume σy = 0 and use 1000 sampling steps.
+% Tune ζMCG heuristically for best performance, and report reference, measurement,
+% and reconstruction for each image along with their corresponding PSNR, SSIM,
+% and LPIPS metrics. Note: Use the same 3 images from part (b) and obtain
+% yt−1 similar to ILVR using q sample() function.
+% 3
+% • Discuss the observed performance and report the restoration time per image.
+% Compare the speed and quality to ILVR. Do you see consistent performance across
+% restoration tasks this time? Although MCG also requires 1000 sampling (denois-
+% ing) steps, do you notice any slowness compared to ILVR? Discuss.
+
+
+
+
+\subsubsection{D: Denoising Diffusion Null-Space Model (DDNM)}
+% (d) [6 pts] Denoising Diffusion Null-Space Model (DDNM) (Wang et al., 2023) replaces
+% the line 5 update in Alg. 1 with an update from a range-null-space decomposition of
+% the forward operator. Specifically, at each step, it forms the Tweedie estimate ˆx0|t and
+% projects it onto the affine constraint set as:
+% ˜x0|t = ˆx0|t + ζDDNM · A†(y − Aˆx0|t).
+% The goal here is to enforce exact data consistency in the range of A, while preserving
+% the null-space component favored by the prior. Once this refined denoised estimate
+% is obtained, DDNM gets the final sample as x′
+% t−1 ∼ p(xt−1|xt, ˜x0|t). Given this new
+% formulation, DDNM improves upon past methods in terms of required sampling steps.
+% • Implement the ddnm() function and perform image restoration for the following
+% inverse problem tasks: (i) SR×4, (ii) SR×8, (iii) 80% random inpainting, and (iv)
+% 128×128 box inpainting. Assume σy = 0 and use 100 sampling steps. Tune
+% ζDDNM heuristically for best performance, and report reference, measurement, and
+% reconstruction for each image along with their corresponding PSNR, SSIM, and
+% LPIPS metrics. Note: Use the same 3 images from part (b).
+% • Discuss the observed performance and report the restoration time per image.
+% Compare the speed and quality to ILVR and MCG.
+
+\subsubsection{E: Noisy measurements and Diffusion Posterior Sampling (DPS)}
+% (e) [5 pts] Add noise to the measurements with σy = 0.05 (use --sigma y). Repeat steps
+% (b), (c), and (d) only for the SR×4 and box inpainting tasks on a single dataset (either
+% CelebA-HQ or ImageNet). Report reference, measurement, and reconstruction for each
+% image. Do you observe any performance degradation for ILVR, MCG, or DDNM? Is
+% the drop in performance more pronounced for one inverse task compared to the other
+% (SR×4 vs box inpainting)? Explain your reasoning for each case.
+
+
+
+
+\subsubsection{F: Diffusion Posterior Sampling (DPS) for noisy measurements}
+% (f) [6 pts] Diffusion Posterior Sampling (DPS) (Chung et al., 2023) applies MCG up-
+% date for the most part but it removes the final projection step for stability to noisy
+% conditions. Therefore, its update is given as:
+% xt−1 = x′
+% t−1 − ζDPS · ∇xt ||y − Aˆx0|t||2
+% • Implement the dps() function and perform image restoration for the following
+% inverse problem tasks: (i) SR×4, (ii) SR×8, (iii) 80% random inpainting, and
+% (iv) 128×128 box inpainting. Assume σy = 0.05 and use 1000 sampling steps.
+% Tune ζDPS heuristically for best performance, and report reference, measurement,
+% and reconstruction for each image along with their corresponding PSNR, SSIM,
+% and LPIPS metrics. Note: Use the same 3 images from part (b).
+% • Discuss the observed performance and report the restoration time per image.
+% Compare the speed and quality to ILVR, MCG and DDNM. Do you see improved
+% performance across noisy conditions? Discuss
