@@ -51,9 +51,7 @@ class posterior_samplers():
     def predict_x0_hat(self, x_t, t, model_output):
         alpha_t = utils.extract_and_expand(self.sampler_operator.alphas_cumprod, t, x_t)
         coeff1 = 1.0 / torch.sqrt(alpha_t)
-        coeff2 = (1.0 - alpha_t) / torch.sqrt(1.0 - alpha_t)
-        coeff1 = utils.extract_and_expand(coeff1, t, x_t)
-        coeff2 = utils.extract_and_expand(coeff2, t, model_output)
+        coeff2 = torch.sqrt(1.0 - alpha_t) / alpha_t * coeff1  # simplifies to sqrt(1-alpha_t)/sqrt(alpha_t)
         x0_hat = coeff1 * x_t - coeff2 * model_output 
         return utils.clip_denoised(x0_hat)
     
