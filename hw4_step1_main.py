@@ -37,6 +37,7 @@ class Config:
         self.parser.add_argument('--degradation', type=str, default='Inpainting', help='SR or Inpainting')
         self.parser.add_argument('--zeta_ilvr', type=float, default=0.8, help='ILVR weighting parameter (tune heuristically)')
         self.parser.add_argument('--zeta_mcg', type=float, default=0.5, help='MCG gradient step weighting parameter (tune heuristically)')
+        self.parser.add_argument('--zeta_ddnm', type=float, default=1.0, help='DDNM data consistency weighting parameter (tune heuristically)')
         
         # hyperparameters for the inpainting mask & SR
         self.parser.add_argument('--mask_type', type=str, default="box", help='box or random')
@@ -173,8 +174,31 @@ class posterior_samplers():
     def ddnm(self, x_t, t, model_t, measurement, A_funcs):
         ############################
         # TODO: Implement DDNM based on the HW PDF description
+        # DDNM steps:
+        # 1. Get Tweedie estimate x̂_0|t
+        # 2. Project onto affine constraint: x̃_0|t = x̂_0|t + ζ_DDNM * A†(y - A*x̂_0|t)
+        # 3. Sample x_{t-1} ~ p(x_{t-1}|x_t, x̃_0|t)
         ############################
-        x_t_prev = None
+        
+        # Step 1: Get model output (predicted noise)
+        with torch.no_grad():
+            model_output = self.score_model(x_t, model_t)
+            model_output, _ = torch.split(model_output, x_t.shape[1], dim=1)
+        
+            # Step 2: Get Tweedie estimate x̂_0|t (denoised estimate)
+            x0_hat = self.predict_x0_hat(x_t, t, model_output)
+            
+            # Step 3: Project onto affine constraint (range-null-space decomposition)
+            # x̃_0|t = x̂_0|t + ζ_DDNM * A†(y - A*x̂_0|t)
+            # This enforces exact data consistency in the range of A while preserving null-space
+            zeta_ddnm = self.conf.zeta_ddnm
+            residual = measurement - A_funcs.A(x0_hat)
+            x0_tilde = x0_hat + zeta_ddnm * A_funcs.A_pinv(residual).reshape(x_t.shape)
+            
+            # Step 4: Sample x_{t-1} ~ p(x_{t-1}|x_t, x̃_0|t) using DDIM
+            # Use the refined estimate x̃_0|t instead of x̂_0|t
+            x_t_prev = self.sample_ddim(x_t, t, x0_tilde, model_output)
+        
         return x_t_prev
     
     def dps(self, x_t, t, model_t, measurement, A_funcs):
