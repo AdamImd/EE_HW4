@@ -1,5 +1,6 @@
 import torch
 import os
+import time
 from step1_utils.models.unet import create_model
 import matplotlib.pyplot as plt
 from tqdm.auto import tqdm
@@ -34,7 +35,8 @@ class Config:
         # hyperparameters for algos
         self.parser.add_argument('--ps_type', type=str, default="ILVR", help="choose from unconditional, ILVR, MCG, DDNM, DPS")
         self.parser.add_argument('--degradation', type=str, default='Inpainting', help='SR or Inpainting')
-        self.parser.add_argument('--zeta_ilvr', type=float, default=1.0, help='ILVR weighting parameter (tune heuristically)')
+        self.parser.add_argument('--zeta_ilvr', type=float, default=0.8, help='ILVR weighting parameter (tune heuristically)')
+        self.parser.add_argument('--zeta_mcg', type=float, default=0.5, help='MCG gradient step weighting parameter (tune heuristically)')
         
         # hyperparameters for the inpainting mask & SR
         self.parser.add_argument('--mask_type', type=str, default="box", help='box or random')
@@ -125,8 +127,47 @@ class posterior_samplers():
     def mcg(self, x_t, t, model_t, measurement, A_funcs):
         ############################
         # TODO: Implement MCG based on the HW PDF description
+        # MCG steps:
+        # 1. x'_{t-1} = DDIM step (unconditional)
+        # 2. x̃_{t-1} = x'_{t-1} - ζ_MCG * ∇_{x_t} ||y - A*x̂_0|_t||^2
+        # 3. x_{t-1} = x̃_{t-1} + A^T(y_{t-1} - A*x̃_{t-1})
         ############################
-        x_t_prev = None
+        
+        # Enable gradient computation for x_t to compute the gradient step
+        x_t_grad = x_t.detach().requires_grad_(True)
+        
+        # Step 1: Get model output (predicted noise)
+        model_output = self.score_model(x_t_grad, model_t)
+        model_output, _ = torch.split(model_output, x_t_grad.shape[1], dim=1)
+        
+        # Step 2: Predict x0_hat from x_t (Tweedie denoised estimate)
+        x0_hat = self.predict_x0_hat(x_t_grad, t, model_output)
+        
+        # Step 3: Compute the data fidelity loss ||y - A*x̂_0||^2
+        residual = measurement - A_funcs.A(x0_hat)
+        loss = torch.sum(residual ** 2)
+        
+        # Step 4: Compute gradient w.r.t. x_t
+        grad = torch.autograd.grad(loss, x_t_grad)[0]
+        
+        # Step 5: DDIM sampling to get x'_{t-1} (without gradient tracking)
+        with torch.no_grad():
+            model_output_detached = model_output.detach()
+            x0_hat_detached = x0_hat.detach()
+            x_t_prev_prime = self.sample_ddim(x_t.detach(), t, x0_hat_detached, model_output_detached)
+            
+            # Step 6: Gradient step: x̃_{t-1} = x'_{t-1} - ζ_MCG * ∇_{x_t} ||y - A*x̂_0||^2
+            zeta_mcg = self.conf.zeta_mcg  # Use dedicated MCG zeta parameter
+            x_t_prev_tilde = x_t_prev_prime - zeta_mcg * grad.detach()
+            
+            # Step 7: Get y_{t-1} by noising the measurement through q_sample
+            # y0 = A^{\dagger}(y) gives us the pseudo-inverse reconstruction
+            y0 = A_funcs.A_pinv(measurement).reshape(x_t.shape)
+            y_t_prev = self.q_sample(y0, t)
+            
+            # Step 8: Projection step with A^T: x_{t-1} = x̃_{t-1} + A^T(y_{t-1} - A*x̃_{t-1})
+            x_t_prev = x_t_prev_tilde + A_funcs.At(A_funcs.A(y_t_prev) - A_funcs.A(x_t_prev_tilde)).reshape(x_t.shape)
+        
         return x_t_prev
     
     def ddnm(self, x_t, t, model_t, measurement, A_funcs):
@@ -174,14 +215,14 @@ def main():
             ps_ops = posterior_samplers(conf, sampler_operator, score_model)
             
             for idx in tqdm(pbar):
-                time = torch.tensor([idx] * x_t.shape[0], device=device)
+                timestep = torch.tensor([idx] * x_t.shape[0], device=device)
                 # Get model output (predicted noise)
                 with torch.no_grad():
-                    model_output = score_model(x_t, time_map[time])
+                    model_output = score_model(x_t, time_map[timestep])
                     model_output, _ = torch.split(model_output, x_t.shape[1], dim=1)
                 # Predict x0_hat and sample x_{t-1}
-                x0_hat = ps_ops.predict_x0_hat(x_t, time, model_output)
-                x_t = ps_ops.sample_ddim(x_t, time, x0_hat, model_output)
+                x0_hat = ps_ops.predict_x0_hat(x_t, timestep, model_output)
+                x_t = ps_ops.sample_ddim(x_t, timestep, x0_hat, model_output)
             
             samples.append(utils.clear_color(x_t))
             # Save individual sample
@@ -191,6 +232,7 @@ def main():
         return
     
     # Sampling (for conditional methods: ILVR, MCG, DDNM, DPS)
+    total_times = []
     for i, ref_img in enumerate(loader):
         print(f'\nSampling for Image {i+1} has started!')
         sampler_operator = DDIM(conf)
@@ -203,19 +245,27 @@ def main():
         time_map = sampler_operator.recreate_alphas().to(device)
         ps_ops = posterior_samplers(conf, sampler_operator, score_model)
         
+        # Start timing
+        start_time = time.time()
+        
         for idx in tqdm(pbar):
-            time = torch.tensor([idx] * x_t.shape[0], device=device)
+            t = torch.tensor([idx] * x_t.shape[0], device=device)
             if conf.ps_type == "ILVR":
-                x_t_prev = ps_ops.ilvr(x_t, time, time_map[time], measurement, A_funcs)    
+                x_t_prev = ps_ops.ilvr(x_t, t, time_map[t], measurement, A_funcs)    
             elif conf.ps_type == "MCG":
-                x_t_prev = ps_ops.mcg(x_t, time, time_map[time], measurement, A_funcs)    
+                x_t_prev = ps_ops.mcg(x_t, t, time_map[t], measurement, A_funcs)    
             elif conf.ps_type == "DDNM":
-                x_t_prev = ps_ops.ddnm(x_t, time, time_map[time], measurement, A_funcs)         
+                x_t_prev = ps_ops.ddnm(x_t, t, time_map[t], measurement, A_funcs)         
             elif conf.ps_type == "DPS":
-                x_t_prev = ps_ops.dps(x_t, time, time_map[time], measurement, A_funcs)
+                x_t_prev = ps_ops.dps(x_t, t, time_map[t], measurement, A_funcs)
             else:
                 raise ValueError(f"Unknown ps_type: {conf.ps_type}")
             x_t = x_t_prev
+        
+        # End timing
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        total_times.append(elapsed_time)
         
         # Compute metrics
         ref_np = utils.clear_color(ref_img)
@@ -233,7 +283,7 @@ def main():
             recon_tensor = torch.tensor(recon_np).permute(2,0,1).unsqueeze(0).to(device) * 2 - 1
             lpips_val = lpips_model(ref_tensor, recon_tensor).item()
         
-        print(f'Image {i+1} - PSNR: {psnr_val:.2f} dB, SSIM: {ssim_val:.4f}, LPIPS: {lpips_val:.4f}')
+        print(f'Image {i+1} - PSNR: {psnr_val:.2f} dB, SSIM: {ssim_val:.4f}, LPIPS: {lpips_val:.4f}, Time: {elapsed_time:.2f}s')
         
         # Save image with metrics in filename
         deg_name = f"{conf.degradation}"
@@ -257,12 +307,15 @@ def main():
         axes[1].set_title('Measurement (A†y)')
         axes[1].axis('off')
         axes[2].imshow(recon_np)
-        axes[2].set_title(f'Reconstruction\nPSNR: {psnr_val:.2f}, SSIM: {ssim_val:.4f}, LPIPS: {lpips_val:.4f}')
+        axes[2].set_title(f'Reconstruction\nPSNR: {psnr_val:.2f}, SSIM: {ssim_val:.4f}, LPIPS: {lpips_val:.4f}\nTime: {elapsed_time:.2f}s')
         axes[2].axis('off')
         plt.tight_layout()
         plt.savefig(image_path, dpi=150, bbox_inches='tight')
         plt.close()
-        
+    
+    # Print summary statistics
+    avg_time = np.mean(total_times)
+    print(f'\nAverage restoration time per image: {avg_time:.2f}s')
     print('\nFINISHED Sampling!\n' + '*' * 60)
 
 if __name__ == '__main__':
