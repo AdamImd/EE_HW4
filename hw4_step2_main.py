@@ -30,7 +30,31 @@ def sample_cg(model, clf, sched, cls_labels, num_steps, guidance_scale, device="
         # TODO: Implement classifier guidance (CG) sampling
         ############################
         
-        x_prev_mean = None
+        # Get schedule parameters
+        alpha_t = sched.alphas[t_idx]
+        abar_t = sched.alphas_cumprod[t_idx]
+        sqrt_one_minus_abar_t = sched.sqrt_one_minus_alphas_cumprod[t_idx]
+        
+        # Time vector for batch
+        t_vec = t_idx.expand(B)
+        
+        # Get unconditional epsilon prediction: ϵθ(xt, t, ∅)
+        with torch.no_grad():
+            eps_uncond = model(x_t, t_vec, cls_labels, force_uncond=True)
+        
+        # Get classifier gradient: ∇xt log pϕ(y|xt, t)
+        logits = clf(x_t, t_vec)
+        logp_y = grad_log_softmax(logits, cls_labels)
+        grad_logp = torch.autograd.grad(logp_y.sum(), x_t)[0]
+        
+        # Compute guided epsilon: ϵ̃ = ϵθ(xt, t, ∅) - ωCG * sqrt(1 - ᾱt) * ∇xt log pϕ(y|xt, t)
+        eps_guided = eps_uncond - guidance_scale * sqrt_one_minus_abar_t * grad_logp
+        
+        # DDPM reverse update: x_{t-1} = (1/sqrt(α_t)) * (x_t - (β_t / sqrt(1 - ᾱ_t)) * ϵ̃) + σ_t * z
+        # Compute mean: μ = (1/sqrt(α_t)) * (x_t - (β_t / sqrt(1 - ᾱ_t)) * ϵ̃)
+        beta_t = sched.betas[t_idx]
+        x_prev_mean = (1.0 / torch.sqrt(alpha_t)) * (x_t - (beta_t / sqrt_one_minus_abar_t) * eps_guided)
+        
         sigma_t = torch.sqrt(sched.posterior_variance[t_idx].clamp(min=1e-20))
         if i < num_steps - 1:
             x_t = (x_prev_mean + sigma_t * torch.randn_like(x_t)).detach().requires_grad_(True)
@@ -51,8 +75,29 @@ def sample_cfg(model, sched, cls_labels, num_steps, guidance_scale, device="cpu"
         ############################
         # TODO: Implement classifier-free guidance (CFG) sampling
         ############################
+        
+        # Get schedule parameters
+        alpha_t = sched.alphas[t_idx]
+        abar_t = sched.alphas_cumprod[t_idx]
+        sqrt_one_minus_abar_t = sched.sqrt_one_minus_alphas_cumprod[t_idx]
+        beta_t = sched.betas[t_idx]
+        
+        # Time vector for batch
+        t_vec = t_idx.expand(B)
+        
+        # Get unconditional epsilon prediction: ϵθ(xt, t, ∅)
+        eps_uncond = model(x_t, t_vec, cls_labels, force_uncond=True)
+        
+        # Get conditional epsilon prediction: ϵθ(xt, t, c)
+        eps_cond = model(x_t, t_vec, cls_labels, force_uncond=False)
+        
+        # Compute CFG guided epsilon: ϵ̃ = ϵθ(xt, t, ∅) + ωCFG * (ϵθ(xt, t, c) - ϵθ(xt, t, ∅))
+        eps_guided = eps_uncond + guidance_scale * (eps_cond - eps_uncond)
+        
+        # DDPM reverse update: x_{t-1} = (1/sqrt(α_t)) * (x_t - (β_t / sqrt(1 - ᾱ_t)) * ϵ̃) + σ_t * z
+        # Compute mean: μ = (1/sqrt(α_t)) * (x_t - (β_t / sqrt(1 - ᾱ_t)) * ϵ̃)
+        x_prev_mean = (1.0 / torch.sqrt(alpha_t)) * (x_t - (beta_t / sqrt_one_minus_abar_t) * eps_guided)
 
-        x_prev_mean = None
         sigma_t = torch.sqrt(sched.posterior_variance[t_idx].clamp(min=1e-20))
         if i < num_steps - 1:
             x_t = x_prev_mean + sigma_t * torch.randn_like(x_t)
@@ -114,3 +159,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# python hw4_step2_main.py --cg_scale 1.0 --cfg_scale 1.0 --sample_steps 100
