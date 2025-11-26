@@ -49,19 +49,24 @@ class posterior_samplers():
         self.score_model = score_model
     
     def predict_x0_hat(self, x_t, t, model_output):
-        ############################
-        # TODO: Implement the function predicting the clean denoised estimate x_{0|t}
-        # Similar to HW3, use utils.extract_and_expand() function when necessary
-        ############################
-        x0_hat = None
+        alpha_t = utils.extract_and_expand(self.sampler_operator.alphas_cumprod, t, x_t)
+        coeff1 = 1.0 / torch.sqrt(alpha_t)
+        coeff2 = (1.0 - alpha_t) / torch.sqrt(1.0 - alpha_t)
+        coeff1 = utils.extract_and_expand(coeff1, t, x_t)
+        coeff2 = utils.extract_and_expand(coeff2, t, model_output)
+        x0_hat = coeff1 * x_t - coeff2 * model_output 
         return utils.clip_denoised(x0_hat)
     
     def sample_ddim(self, x_t, t, x0_hat, model_output):
-        ############################
-        # TODO: Implement DDIM sampling
-        ############################
-        sigma = None
-        x_t_prev = None
+        sigma = (self.conf.eta * torch.sqrt((1 - self.sampler_operator.alphas_cumprod_prev) / (1 - self.sampler_operator.alphas_cumprod)) 
+                 * torch.sqrt(1 - self.sampler_operator.alphas_cumprod / self.sampler_operator.alphas_cumprod_prev))
+        posterior_mean_coef1 = torch.sqrt(self.sampler_operator.alphas_cumprod_prev)
+        posterior_mean_coef2 = torch.sqrt(1.0 - self.sampler_operator.alphas_cumprod_prev - sigma**2)
+        coef1 = utils.extract_and_expand(posterior_mean_coef1, t, x0_hat)
+        coef2 = utils.extract_and_expand(posterior_mean_coef2, t, model_output)
+        x_t_prev = coef1 * x0_hat + coef2 * model_output
+
+
         noise = torch.randn_like(x_t)
         if t != 0:
             x_t_prev += utils.extract_and_expand(sigma, t, noise) * noise
@@ -73,7 +78,11 @@ class posterior_samplers():
         # Hint-1: Reparametrization Trick
         # Hint-2: You can get \bar{α}_{t−1} from --> self.sampler_operator.alphas_cumprod_prev
         ############################
-        q_xt_x0 = None
+        # Get alpha_bar_{t-1}
+        alpha_bar_prev = utils.extract_and_expand(self.sampler_operator.alphas_cumprod_prev, t, data)
+        # Reparametrization: x_{t-1} = sqrt(alpha_bar_{t-1}) * x0 + sqrt(1 - alpha_bar_{t-1}) * noise
+        noise = torch.randn_like(data)
+        q_xt_x0 = torch.sqrt(alpha_bar_prev) * data + torch.sqrt(1 - alpha_bar_prev) * noise
         return q_xt_x0
     
     def ilvr(self, x_t, t, model_t, measurement, A_funcs):
@@ -87,7 +96,25 @@ class posterior_samplers():
         # Hint-2: A, A^T or A^\dagger operations can be performed by:
         # A_funcs.A(), A_funcs.At(), A_funcs.A_pinv()
         ############################
-        x_t_prev = None
+        # Step 1: Get model output (predicted noise)
+        model_output = self.score_model(x_t, model_t)
+        model_output, _ = torch.split(model_output, x_t.shape[1], dim=1)
+        
+        # Step 2: Predict x0_hat from x_t (Tweedie denoised estimate)
+        x0_hat = self.predict_x0_hat(x_t, t, model_output)
+        
+        # Step 3: DDIM sampling to get x'_{t-1}
+        x_t_prev_prime = self.sample_ddim(x_t, t, x0_hat, model_output)
+        
+        # Step 4: Get y_{t-1} by noising the measurement through q_sample
+        # y0 = A^{\dagger}(y) gives us the pseudo-inverse reconstruction
+        y0 = A_funcs.A_pinv(measurement).reshape(x_t.shape)
+        y_t_prev = self.q_sample(y0, t)
+        
+        # Step 5: ILVR update: x_{t-1} = x'_{t-1} + zeta * A^{\dagger}(y_{t-1} - A(x'_{t-1}))
+        zeta_ilvr = 1.0  # Can be tuned heuristically
+        x_t_prev = x_t_prev_prime + zeta_ilvr * A_funcs.A_pinv(A_funcs.A(y_t_prev) - A_funcs.A(x_t_prev_prime)).reshape(x_t.shape)
+        
         return x_t_prev
     
     def mcg(self, x_t, t, model_t, measurement, A_funcs):
