@@ -100,12 +100,14 @@ def compute_clip_similarity(image: Image.Image, text: str, clip_model, clip_proc
     Returns:
         Cosine similarity score (0-1 range, multiplied by 100 for percentage)
     """
-    # Process inputs
+    # Process inputs with truncation to handle long prompts (CLIP max is 77 tokens)
     inputs = clip_processor(
         text=[text],
         images=image,
         return_tensors="pt",
-        padding=True
+        padding=True,
+        truncation=True,
+        max_length=77
     ).to(DEVICE)
     
     # Get embeddings

@@ -1,0 +1,11 @@
+{
+  "prompt": "A Japanese temple surrounded by cherry blossoms",
+  "negative_prompt": null,
+  "cfg_scale": 10.0,
+  "num_steps": 50,
+  "eta": 0.0,
+  "seed": 42,
+  "clip_score": 33.458006381988525,
+  "manual_score": 8.5,
+  "timestamp": "2025-11-26T14:37:32.641218"
+}

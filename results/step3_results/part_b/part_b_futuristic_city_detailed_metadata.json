@@ -1,0 +1,11 @@
+{
+  "prompt": "A breathtaking cyberpunk megacity stretching endlessly into the night sky, colossal holographic advertisements casting vibrant neon reflections on rain-slicked streets far below, streams of autonomous flying vehicles navigating between impossibly tall crystalline towers, pedestrian skywalks connecting buildings at dizzying heights, and the distant glow of a massive digital moon illuminating this technological marvel",
+  "negative_prompt": null,
+  "cfg_scale": 10.0,
+  "num_steps": 50,
+  "eta": 0.0,
+  "seed": 42,
+  "clip_score": 28.092682361602783,
+  "manual_score": 7.5,
+  "timestamp": "2025-11-26T14:37:42.276023"
+}

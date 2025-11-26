@@ -1,0 +1,11 @@
+{
+  "prompt": "A sprawling cyberpunk metropolis at night with towering skyscrapers, neon signs, and sleek flying vehicles zooming between buildings",
+  "negative_prompt": "blurry, low quality, distorted, ugly, deformed, bad anatomy, low resolution, grainy, noisy, watermark, text, signature, poorly drawn, amateur, disfigured",
+  "cfg_scale": 8.0,
+  "num_steps": 50,
+  "eta": 0.0,
+  "seed": 42,
+  "clip_score": 29.795339703559875,
+  "manual_score": null,
+  "timestamp": "2025-11-26T14:37:55.378314"
+}

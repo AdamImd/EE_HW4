@@ -1,0 +1,11 @@
+{
+  "prompt": "A traditional Japanese pagoda temple nestled among blooming cherry blossom trees, with petals gently falling in the spring breeze",
+  "negative_prompt": null,
+  "cfg_scale": 10.0,
+  "num_steps": 50,
+  "eta": 0.0,
+  "seed": 42,
+  "clip_score": 29.635316133499146,
+  "manual_score": 9.0,
+  "timestamp": "2025-11-26T14:37:34.565733"
+}

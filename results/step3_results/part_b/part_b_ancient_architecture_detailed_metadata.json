@@ -1,0 +1,11 @@
+{
+  "prompt": "A majestic five-story Japanese pagoda rising elegantly from a tranquil garden sanctuary, enveloped by ancient cherry blossom trees in full bloom, delicate pink petals cascading like snow through the soft morning mist, a serene koi pond reflecting the timeless beauty, stone lanterns lining the moss-covered pathway leading to this spiritual haven",
+  "negative_prompt": null,
+  "cfg_scale": 10.0,
+  "num_steps": 50,
+  "eta": 0.0,
+  "seed": 42,
+  "clip_score": 34.508106112480164,
+  "manual_score": 8.0,
+  "timestamp": "2025-11-26T14:37:36.489188"
+}

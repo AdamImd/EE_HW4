@@ -1,0 +1,11 @@
+{
+  "prompt": "A sprawling cyberpunk metropolis at night with towering skyscrapers, neon signs, and sleek flying vehicles zooming between buildings",
+  "negative_prompt": null,
+  "cfg_scale": 10.0,
+  "num_steps": 50,
+  "eta": 0.0,
+  "seed": 42,
+  "clip_score": 32.93026685714722,
+  "manual_score": 8.0,
+  "timestamp": "2025-11-26T14:37:40.345072"
+}

@@ -1,0 +1,11 @@
+{
+  "prompt": "A vibrant coral reef teeming with tropical fish of various colors, sunlight filtering through the crystal-clear ocean water above",
+  "negative_prompt": null,
+  "cfg_scale": 10.0,
+  "num_steps": 50,
+  "eta": 0.0,
+  "seed": 42,
+  "clip_score": 32.11641609668732,
+  "manual_score": 8.5,
+  "timestamp": "2025-11-26T14:37:28.791629"
+}
