@@ -10,6 +10,10 @@ import torchvision.transforms as transforms
 from step1_utils.data.dataloader import get_dataset, get_dataloader
 from step1_utils.degradations import GaussianNoise, get_degradation
 import numpy as np
+from skimage.metrics import peak_signal_noise_ratio as psnr
+from skimage.metrics import structural_similarity as ssim
+import lpips
+
 
 class Config:
     def __init__(self):
@@ -30,11 +34,12 @@ class Config:
         # hyperparameters for algos
         self.parser.add_argument('--ps_type', type=str, default="ILVR", help="choose from unconditional, ILVR, MCG, DDNM, DPS")
         self.parser.add_argument('--degradation', type=str, default='Inpainting', help='SR or Inpainting')
+        self.parser.add_argument('--zeta_ilvr', type=float, default=1.0, help='ILVR weighting parameter (tune heuristically)')
         
         # hyperparameters for the inpainting mask & SR
         self.parser.add_argument('--mask_type', type=str, default="box", help='box or random')
         self.parser.add_argument('--random_amount', type=float, default=0.8, help='how much do you want to mask out?')
-        self.parser.add_argument('--box_indices', type=int, default=[30,30,128,128], help='inpainting box indices - (y,x,height,width)')
+        self.parser.add_argument('--box_indices', type=int, nargs=4, default=[30,30,128,128], help='inpainting box indices - (y,x,height,width)')
         self.parser.add_argument('--scale_factor', type=int, default=4, help='SR scale factor')
 
     def parse(self, args=None):
@@ -112,7 +117,7 @@ class posterior_samplers():
             y_t_prev = self.q_sample(y0, t)
             
             # Step 5: ILVR update: x_{t-1} = x'_{t-1} + zeta * A^{\dagger}(y_{t-1} - A(x'_{t-1}))
-            zeta_ilvr = 1.0  # Can be tuned heuristically
+            zeta_ilvr = self.conf.zeta_ilvr  # Tunable heuristically
             x_t_prev = x_t_prev_prime + zeta_ilvr * A_funcs.A_pinv(A_funcs.A(y_t_prev) - A_funcs.A(x_t_prev_prime)).reshape(x_t.shape)
         
         return x_t_prev
@@ -211,11 +216,53 @@ def main():
             else:
                 raise ValueError(f"Unknown ps_type: {conf.ps_type}")
             x_t = x_t_prev
-        image_filename = f"recon_{i+1}.png"
         
-        image_path = os.path.join(conf.out_path, conf.dataset, conf.ps_type, image_filename)
+        # Compute metrics
+        ref_np = utils.clear_color(ref_img)
+        recon_np = utils.clear_color(x_t)
+        meas_np = utils.clear_color(A_funcs.A_pinv(measurement).reshape(1,3,256,256))
+        
+        # PSNR and SSIM
+        psnr_val = psnr(ref_np, recon_np, data_range=1.0)
+        ssim_val = ssim(ref_np, recon_np, data_range=1.0, channel_axis=2)
+        
+        # LPIPS
+        with torch.no_grad():
+            lpips_model = lpips.LPIPS(net='alex').to(device)
+            ref_tensor = torch.tensor(ref_np).permute(2,0,1).unsqueeze(0).to(device) * 2 - 1  # Scale to [-1, 1]
+            recon_tensor = torch.tensor(recon_np).permute(2,0,1).unsqueeze(0).to(device) * 2 - 1
+            lpips_val = lpips_model(ref_tensor, recon_tensor).item()
+        
+        print(f'Image {i+1} - PSNR: {psnr_val:.2f} dB, SSIM: {ssim_val:.4f}, LPIPS: {lpips_val:.4f}')
+        
+        # Save image with metrics in filename
+        deg_name = f"{conf.degradation}"
+        if conf.degradation == "SR":
+            deg_name += f"_x{conf.scale_factor}"
+        elif conf.degradation == "Inpainting":
+            deg_name += f"_{conf.mask_type}"
+            if conf.mask_type == "random":
+                deg_name += f"_{int(conf.random_amount*100)}pct"
+        
+        image_filename = f"recon_{i+1}.png"
+        image_path = os.path.join(conf.out_path, conf.dataset, conf.ps_type, deg_name, image_filename)
         os.makedirs(os.path.dirname(image_path), exist_ok=True)
-        plt.imsave(image_path, np.concatenate([utils.clear_color(ref_img), utils.clear_color(A_funcs.A_pinv(measurement).reshape(1,3,256,256)), utils.clear_color(x_t)], axis=1))
+        
+        # Create figure with reference, measurement, and reconstruction
+        fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+        axes[0].imshow(ref_np)
+        axes[0].set_title('Reference')
+        axes[0].axis('off')
+        axes[1].imshow(meas_np)
+        axes[1].set_title('Measurement (A†y)')
+        axes[1].axis('off')
+        axes[2].imshow(recon_np)
+        axes[2].set_title(f'Reconstruction\nPSNR: {psnr_val:.2f}, SSIM: {ssim_val:.4f}, LPIPS: {lpips_val:.4f}')
+        axes[2].axis('off')
+        plt.tight_layout()
+        plt.savefig(image_path, dpi=150, bbox_inches='tight')
+        plt.close()
+        
     print('\nFINISHED Sampling!\n' + '*' * 60)
 
 if __name__ == '__main__':

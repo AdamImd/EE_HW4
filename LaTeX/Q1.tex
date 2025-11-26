@@ -48,12 +48,20 @@ begin{figure}[h]
     \centering
     % 5x2 grid of images
     \begin{tabular}{ccccc}
-        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/unconditional.png} &
-        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/uncond_sample_2.png} &
-        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/uncond_sample_3.png} &
-        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/uncond_sample_4.png} &
-        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/uncond_sample_5.png} \\
-
+        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/unconditional/sample_1.png} &
+        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/unconditional/sample_2.png} &
+        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/unconditional/sample_3.png} &
+        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/unconditional/sample_4.png} &
+        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/unconditional/sample_5.png} \\
+        \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_1.png} &
+        \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_2.png} &
+        \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_3.png} &
+        \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_4.png} &
+        \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_5.png} \\ 
+    \end{tabular}
+    \caption{Unconditional samples from CelebA-HQ (top row) and ImageNet (bottom row) pretrained ADM models using DDIM sampling with 1000 steps.}
+    \label{fig:uncond_samples}
+\end{figure}
 
 
 
@@ -86,6 +94,41 @@ begin{figure}[h]
 % • Discuss the observed performance and report the restoration time per image.
 % Do you obtain similar results for inpainting tasks as for super-resolution tasks? If
 % not, why might that be the case?
+
+I found that an ILVR weight of 0.8 worked well during initial tests, so I used that value for all tasks. 
+
+\begin{figure}
+    \centering
+    % 4 columns: SRx4, SRx8, Random Inpainting, Box Inpainting
+    \begin{tabular}{cccc}
+        % SRx4
+        \begin{tabular}{c}
+            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/SR_x4/recon_1.png} \\
+            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/SR_x4/recon_2.png} \\
+            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/SR_x4/recon_3.png} \\
+        \end{tabular} &
+        % SRx8
+        \begin{tabular}{c}
+            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/SR_x8/recon_1.png} \\
+            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/SR_x8/recon_2.png} \\
+            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/SR_x8/recon_3.png} \\
+        \end{tabular} &
+        % Random Inpainting
+        \begin{tabular}{c}
+            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/Inpainting_random_80pct/recon_1.png} \\
+            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/Inpainting_random_80pct/recon_2.png} \\
+            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/Inpainting_random_80pct/recon_3.png} \\
+        \end{tabular} &
+        % Box Inpainting
+        \begin{tabular}{c}
+            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/Inpainting_box/recon_1.png} \\
+            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/Inpainting_box/recon_2.png} \\
+            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/Inpainting_box/recon_3.png} \\
+        \end{tabular} \\
+    \end{tabular}
+    \caption{ILVR Reconstructions on CelebA-HQ}.
+    \label{fig:ilvr_celeba}
+\end{figure}
 
 
 
