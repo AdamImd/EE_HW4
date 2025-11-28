@@ -1,93 +1,93 @@
 {
   "version_averages": {
     "simple": {
-      "avg_clip": 34.0655392408371,
+      "avg_clip": 29.782381653785706,
       "avg_manual": 7.8
     },
     "medium": {
-      "avg_clip": 33.20565581321716,
+      "avg_clip": 32.015042304992676,
       "avg_manual": 8.4
     },
     "detailed": {
-      "avg_clip": 31.33711814880371,
+      "avg_clip": 32.297531962394714,
       "avg_manual": 7.5
     }
   },
-  "correlation": 0.003825580931150864,
+  "correlation": -0.25783771684086154,
   "all_scores": [
     {
-      "prompt": "An astronaut floating in space near Earth",
-      "clip": 32.65702724456787,
+      "prompt": "An astronaut  in space",
+      "clip": 28.487125039100647,
       "manual": 7.5
     },
     {
-      "prompt": "An astronaut in a white spacesuit floating gracefu",
-      "clip": 35.47215461730957,
+      "prompt": "An astronaut in a spacesuit floating above Earth",
+      "clip": 32.65432119369507,
       "manual": 8.0
     },
     {
-      "prompt": "A lone astronaut in a pristine white spacesuit dri",
-      "clip": 32.82321393489838,
+      "prompt": "A single astronaut in a shiny white spacesuit drif",
+      "clip": 33.74906778335571,
       "manual": 7.0
     },
     {
-      "prompt": "A colorful coral reef with tropical fish",
-      "clip": 33.91337692737579,
+      "prompt": "A coral reef",
+      "clip": 31.38861656188965,
       "manual": 8.0
     },
     {
-      "prompt": "A vibrant coral reef teeming with tropical fish of",
-      "clip": 32.11641609668732,
+      "prompt": "A colorful coral reef with tropical fish of and su",
+      "clip": 32.931846380233765,
       "manual": 8.5
     },
     {
-      "prompt": "An enchanting underwater paradise featuring a magn",
-      "clip": 31.60540461540222,
+      "prompt": "An underwater coral reef that has all sorts of lif",
+      "clip": 30.337384343147278,
       "manual": 7.5
     },
     {
-      "prompt": "A Japanese temple surrounded by cherry blossoms",
-      "clip": 33.458006381988525,
+      "prompt": "A medieval castle",
+      "clip": 29.358026385307312,
       "manual": 8.5
     },
     {
-      "prompt": "A traditional Japanese pagoda temple nestled among",
-      "clip": 29.635316133499146,
+      "prompt": "A lively medieval castle surrounded by a moat and ",
+      "clip": 31.97605013847351,
       "manual": 9.0
     },
     {
-      "prompt": "A majestic five-story Japanese pagoda rising elega",
-      "clip": 34.508106112480164,
+      "prompt": "A beautyful german day, with a large castle made o",
+      "clip": 30.37717342376709,
       "manual": 8.0
     },
     {
-      "prompt": "A futuristic city at night with flying cars",
-      "clip": 35.76293587684631,
+      "prompt": "A cyberpunk city",
+      "clip": 33.70492160320282,
       "manual": 7.0
     },
     {
-      "prompt": "A sprawling cyberpunk metropolis at night with tow",
-      "clip": 32.93026685714722,
+      "prompt": "A distopian cyberpunk city, with neon lights and f",
+      "clip": 34.945571422576904,
       "manual": 8.0
     },
     {
-      "prompt": "A breathtaking cyberpunk megacity stretching endle",
-      "clip": 28.092682361602783,
+      "prompt": "A breathtaking cyberpunk megacity that has bustlin",
+      "clip": 29.067426919937134,
       "manual": 7.5
     },
     {
-      "prompt": "A majestic dragon perched on a mountain",
-      "clip": 34.53634977340698,
+      "prompt": "A cat with a bird body",
+      "clip": 25.9732186794281,
       "manual": 8.0
     },
     {
-      "prompt": "A magnificent red dragon with outstretched wings p",
-      "clip": 35.874125361442566,
+      "prompt": "A chimera with the body of a cat, wings of a bird.",
+      "clip": 27.56742238998413,
       "manual": 8.5
     },
     {
-      "prompt": "An ancient and awe-inspiring dragon with scales th",
-      "clip": 29.65618371963501,
+      "prompt": "A beautiful chimera creature that has the body of ",
+      "clip": 37.95660734176636,
       "manual": 7.5
     }
   ]

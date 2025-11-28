@@ -2,120 +2,120 @@
   {
     "topic": "space_exploration",
     "version": "simple",
-    "prompt": "An astronaut floating in space near Earth",
-    "clip_score": 32.65702724456787,
+    "prompt": "An astronaut  in space",
+    "clip_score": 28.487125039100647,
     "manual_score": 7.5,
     "image_path": "results/step3_results/part_b/part_b_space_exploration_simple.png"
   },
   {
     "topic": "space_exploration",
     "version": "medium",
-    "prompt": "An astronaut in a white spacesuit floating gracefully above Earth, with stars visible in the dark background and the blue planet glowing below",
-    "clip_score": 35.47215461730957,
+    "prompt": "An astronaut in a spacesuit floating above Earth",
+    "clip_score": 32.65432119369507,
     "manual_score": 8.0,
     "image_path": "results/step3_results/part_b/part_b_space_exploration_medium.png"
   },
   {
     "topic": "space_exploration",
     "version": "detailed",
-    "prompt": "A lone astronaut in a pristine white spacesuit drifting serenely against the vast canvas of space, Earth's magnificent blue marble reflecting sunlight below, surrounded by countless twinkling stars and the ethereal glow of distant galaxies, capturing the profound solitude and wonder of human space exploration",
-    "clip_score": 32.82321393489838,
+    "prompt": "A single astronaut in a shiny white spacesuit drifting serenely against the stars in the sky. There is a silent planet below with swirling clouds and blue oceans, with their ship orbiting in the distance",
+    "clip_score": 33.74906778335571,
     "manual_score": 7.0,
     "image_path": "results/step3_results/part_b/part_b_space_exploration_detailed.png"
   },
   {
     "topic": "underwater_world",
     "version": "simple",
-    "prompt": "A colorful coral reef with tropical fish",
-    "clip_score": 33.91337692737579,
+    "prompt": "A coral reef",
+    "clip_score": 31.38861656188965,
     "manual_score": 8.0,
     "image_path": "results/step3_results/part_b/part_b_underwater_world_simple.png"
   },
   {
     "topic": "underwater_world",
     "version": "medium",
-    "prompt": "A vibrant coral reef teeming with tropical fish of various colors, sunlight filtering through the crystal-clear ocean water above",
-    "clip_score": 32.11641609668732,
+    "prompt": "A colorful coral reef with tropical fish of and sunlight filtering through the water",
+    "clip_score": 32.931846380233765,
     "manual_score": 8.5,
     "image_path": "results/step3_results/part_b/part_b_underwater_world_medium.png"
   },
   {
     "topic": "underwater_world",
     "version": "detailed",
-    "prompt": "An enchanting underwater paradise featuring a magnificent coral reef bursting with life, where schools of neon-colored tropical fish weave between ancient coral formations, golden sunbeams pierce through the azure waters creating dancing light patterns, and a gentle sea turtle glides majestically through this aquatic wonderland",
-    "clip_score": 31.60540461540222,
+    "prompt": "An underwater coral reef that has all sorts of life, with many fish and sharks swimming around. It has bright corals of all colors and shapes, with sunlight filtering through the clear blue water from above.",
+    "clip_score": 30.337384343147278,
     "manual_score": 7.5,
     "image_path": "results/step3_results/part_b/part_b_underwater_world_detailed.png"
   },
   {
     "topic": "ancient_architecture",
     "version": "simple",
-    "prompt": "A Japanese temple surrounded by cherry blossoms",
-    "clip_score": 33.458006381988525,
+    "prompt": "A medieval castle",
+    "clip_score": 29.358026385307312,
     "manual_score": 8.5,
     "image_path": "results/step3_results/part_b/part_b_ancient_architecture_simple.png"
   },
   {
     "topic": "ancient_architecture",
     "version": "medium",
-    "prompt": "A traditional Japanese pagoda temple nestled among blooming cherry blossom trees, with petals gently falling in the spring breeze",
-    "clip_score": 29.635316133499146,
+    "prompt": "A lively medieval castle surrounded by a moat and lush greenery",
+    "clip_score": 31.97605013847351,
     "manual_score": 9.0,
     "image_path": "results/step3_results/part_b/part_b_ancient_architecture_medium.png"
   },
   {
     "topic": "ancient_architecture",
     "version": "detailed",
-    "prompt": "A majestic five-story Japanese pagoda rising elegantly from a tranquil garden sanctuary, enveloped by ancient cherry blossom trees in full bloom, delicate pink petals cascading like snow through the soft morning mist, a serene koi pond reflecting the timeless beauty, stone lanterns lining the moss-covered pathway leading to this spiritual haven",
-    "clip_score": 34.508106112480164,
+    "prompt": "A beautyful german day, with a large castle made of stone, with a few vines climbing up the spires. The vilage around the castle is full of life, with people walking around the market.",
+    "clip_score": 30.37717342376709,
     "manual_score": 8.0,
     "image_path": "results/step3_results/part_b/part_b_ancient_architecture_detailed.png"
   },
   {
     "topic": "futuristic_city",
     "version": "simple",
-    "prompt": "A futuristic city at night with flying cars",
-    "clip_score": 35.76293587684631,
+    "prompt": "A cyberpunk city",
+    "clip_score": 33.70492160320282,
     "manual_score": 7.0,
     "image_path": "results/step3_results/part_b/part_b_futuristic_city_simple.png"
   },
   {
     "topic": "futuristic_city",
     "version": "medium",
-    "prompt": "A sprawling cyberpunk metropolis at night with towering skyscrapers, neon signs, and sleek flying vehicles zooming between buildings",
-    "clip_score": 32.93026685714722,
+    "prompt": "A distopian cyberpunk city, with neon lights and flying cars.",
+    "clip_score": 34.945571422576904,
     "manual_score": 8.0,
     "image_path": "results/step3_results/part_b/part_b_futuristic_city_medium.png"
   },
   {
     "topic": "futuristic_city",
     "version": "detailed",
-    "prompt": "A breathtaking cyberpunk megacity stretching endlessly into the night sky, colossal holographic advertisements casting vibrant neon reflections on rain-slicked streets far below, streams of autonomous flying vehicles navigating between impossibly tall crystalline towers, pedestrian skywalks connecting buildings at dizzying heights, and the distant glow of a massive digital moon illuminating this technological marvel",
-    "clip_score": 28.092682361602783,
+    "prompt": "A breathtaking cyberpunk megacity that has bustling streets filled with people and vendors. The skyline has many towering skyscrapers, and there are futuristic flying cars.",
+    "clip_score": 29.067426919937134,
     "manual_score": 7.5,
     "image_path": "results/step3_results/part_b/part_b_futuristic_city_detailed.png"
   },
   {
     "topic": "fantasy_creatures",
     "version": "simple",
-    "prompt": "A majestic dragon perched on a mountain",
-    "clip_score": 34.53634977340698,
+    "prompt": "A cat with a bird body",
+    "clip_score": 25.9732186794281,
     "manual_score": 8.0,
     "image_path": "results/step3_results/part_b/part_b_fantasy_creatures_simple.png"
   },
   {
     "topic": "fantasy_creatures",
     "version": "medium",
-    "prompt": "A magnificent red dragon with outstretched wings perched atop a snowy mountain peak, overlooking a medieval kingdom in the valley below",
-    "clip_score": 35.874125361442566,
+    "prompt": "A chimera with the body of a cat, wings of a bird.",
+    "clip_score": 27.56742238998413,
     "manual_score": 8.5,
     "image_path": "results/step3_results/part_b/part_b_fantasy_creatures_medium.png"
   },
   {
     "topic": "fantasy_creatures",
     "version": "detailed",
-    "prompt": "An ancient and awe-inspiring dragon with scales that shimmer like molten ruby and gold, magnificent wings spread wide against a dramatic sunset sky, perched regally upon the highest peak of a snow-capped mountain range, its piercing amber eyes surveying the sprawling medieval kingdom nestled in the misty valley far below, wisps of smoke curling from its nostrils as storm clouds gather in homage to this legendary beast",
-    "clip_score": 29.65618371963501,
+    "prompt": "A beautiful chimera creature that has the body of a maine coon cat, with large majestic wings of an eagle.",
+    "clip_score": 37.95660734176636,
     "manual_score": 7.5,
     "image_path": "results/step3_results/part_b/part_b_fantasy_creatures_detailed.png"
   }

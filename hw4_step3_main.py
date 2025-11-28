@@ -282,33 +282,33 @@ def get_prompts():
     prompts = {
         # Topic 1: Space Exploration
         "space_exploration": {
-            "simple": "An astronaut floating in space near Earth",
-            "medium": "An astronaut in a white spacesuit floating gracefully above Earth, with stars visible in the dark background and the blue planet glowing below",
-            "detailed": "A lone astronaut in a pristine white spacesuit drifting serenely against the vast canvas of space, Earth's magnificent blue marble reflecting sunlight below, surrounded by countless twinkling stars and the ethereal glow of distant galaxies, capturing the profound solitude and wonder of human space exploration"
+            "simple": "An astronaut  in space",
+            "medium": "An astronaut in a spacesuit floating above Earth",
+            "detailed": "A single astronaut in a shiny white spacesuit drifting serenely against the stars in the sky. There is a silent planet below with swirling clouds and blue oceans, with their ship orbiting in the distance"
         },
         # Topic 2: Underwater World
         "underwater_world": {
-            "simple": "A colorful coral reef with tropical fish",
-            "medium": "A vibrant coral reef teeming with tropical fish of various colors, sunlight filtering through the crystal-clear ocean water above",
-            "detailed": "An enchanting underwater paradise featuring a magnificent coral reef bursting with life, where schools of neon-colored tropical fish weave between ancient coral formations, golden sunbeams pierce through the azure waters creating dancing light patterns, and a gentle sea turtle glides majestically through this aquatic wonderland"
+            "simple": "A coral reef",
+            "medium": "A colorful coral reef with tropical fish of and sunlight filtering through the water",
+            "detailed": "An underwater coral reef that has all sorts of life, with many fish and sharks swimming around. It has bright corals of all colors and shapes, with sunlight filtering through the clear blue water from above."
         },
         # Topic 3: Ancient Architecture
         "ancient_architecture": {
-            "simple": "A Japanese temple surrounded by cherry blossoms",
-            "medium": "A traditional Japanese pagoda temple nestled among blooming cherry blossom trees, with petals gently falling in the spring breeze",
-            "detailed": "A majestic five-story Japanese pagoda rising elegantly from a tranquil garden sanctuary, enveloped by ancient cherry blossom trees in full bloom, delicate pink petals cascading like snow through the soft morning mist, a serene koi pond reflecting the timeless beauty, stone lanterns lining the moss-covered pathway leading to this spiritual haven"
+            "simple": "A medieval castle",
+            "medium": "A lively medieval castle surrounded by a moat and lush greenery",
+            "detailed": "A beautyful german day, with a large castle made of stone, with a few vines climbing up the spires. The vilage around the castle is full of life, with people walking around the market."
         },
         # Topic 4: Futuristic City
         "futuristic_city": {
-            "simple": "A futuristic city at night with flying cars",
-            "medium": "A sprawling cyberpunk metropolis at night with towering skyscrapers, neon signs, and sleek flying vehicles zooming between buildings",
-            "detailed": "A breathtaking cyberpunk megacity stretching endlessly into the night sky, colossal holographic advertisements casting vibrant neon reflections on rain-slicked streets far below, streams of autonomous flying vehicles navigating between impossibly tall crystalline towers, pedestrian skywalks connecting buildings at dizzying heights, and the distant glow of a massive digital moon illuminating this technological marvel"
+            "simple": "A cyberpunk city",
+            "medium": "A distopian cyberpunk city, with neon lights and flying cars.",
+            "detailed": "A breathtaking cyberpunk megacity that has bustling streets filled with people and vendors. The skyline has many towering skyscrapers, and there are futuristic flying cars."
         },
         # Topic 5: Fantasy Creatures
         "fantasy_creatures": {
-            "simple": "A majestic dragon perched on a mountain",
-            "medium": "A magnificent red dragon with outstretched wings perched atop a snowy mountain peak, overlooking a medieval kingdom in the valley below",
-            "detailed": "An ancient and awe-inspiring dragon with scales that shimmer like molten ruby and gold, magnificent wings spread wide against a dramatic sunset sky, perched regally upon the highest peak of a snow-capped mountain range, its piercing amber eyes surveying the sprawling medieval kingdom nestled in the misty valley far below, wisps of smoke curling from its nostrils as storm clouds gather in homage to this legendary beast"
+            "simple": "A cat with a bird body",
+            "medium": "A chimera with the body of a cat, wings of a bird.",
+            "detailed": "A beautiful chimera creature that has the body of a maine coon cat, with large majestic wings of an eagle."
         }
     }
     

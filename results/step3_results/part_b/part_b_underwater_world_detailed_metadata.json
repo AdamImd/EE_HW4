@@ -1,11 +1,11 @@
 {
-  "prompt": "An enchanting underwater paradise featuring a magnificent coral reef bursting with life, where schools of neon-colored tropical fish weave between ancient coral formations, golden sunbeams pierce through the azure waters creating dancing light patterns, and a gentle sea turtle glides majestically through this aquatic wonderland",
+  "prompt": "An underwater coral reef that has all sorts of life, with many fish and sharks swimming around. It has bright corals of all colors and shapes, with sunlight filtering through the clear blue water from above.",
   "negative_prompt": null,
   "cfg_scale": 10.0,
   "num_steps": 50,
   "eta": 0.0,
   "seed": 42,
-  "clip_score": 31.60540461540222,
+  "clip_score": 30.337384343147278,
   "manual_score": 7.5,
-  "timestamp": "2025-11-26T14:37:30.715784"
+  "timestamp": "2025-11-28T14:41:14.894943"
 }

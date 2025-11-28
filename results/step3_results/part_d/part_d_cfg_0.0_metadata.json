@@ -1,11 +1,11 @@
 {
-  "prompt": "A sprawling cyberpunk metropolis at night with towering skyscrapers, neon signs, and sleek flying vehicles zooming between buildings",
+  "prompt": "A distopian cyberpunk city, with neon lights and flying cars.",
   "negative_prompt": "blurry, low quality, distorted, ugly, deformed, bad anatomy, low resolution, grainy, noisy, watermark, text, signature, poorly drawn, amateur, disfigured",
   "cfg_scale": 0.0,
   "num_steps": 50,
   "eta": 0.0,
   "seed": 42,
-  "clip_score": 29.578912258148193,
+  "clip_score": 30.573785305023193,
   "manual_score": null,
-  "timestamp": "2025-11-26T14:37:49.559971"
+  "timestamp": "2025-11-28T14:41:33.726896"
 }

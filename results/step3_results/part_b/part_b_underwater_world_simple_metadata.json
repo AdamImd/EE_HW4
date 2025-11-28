@@ -1,11 +1,11 @@
 {
-  "prompt": "A colorful coral reef with tropical fish",
+  "prompt": "A coral reef",
   "negative_prompt": null,
   "cfg_scale": 10.0,
   "num_steps": 50,
   "eta": 0.0,
   "seed": 42,
-  "clip_score": 33.91337692737579,
+  "clip_score": 31.38861656188965,
   "manual_score": 8.0,
-  "timestamp": "2025-11-26T14:37:26.862570"
+  "timestamp": "2025-11-28T14:41:11.063969"
 }

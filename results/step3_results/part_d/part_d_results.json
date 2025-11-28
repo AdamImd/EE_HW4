@@ -1,5 +1,5 @@
 {
-  "prompt": "A sprawling cyberpunk metropolis at night with towering skyscrapers, neon signs, and sleek flying vehicles zooming between buildings",
+  "prompt": "A distopian cyberpunk city, with neon lights and flying cars.",
   "negative_prompt": "blurry, low quality, distorted, ugly, deformed, bad anatomy, low resolution, grainy, noisy, watermark, text, signature, poorly drawn, amateur, disfigured",
   "num_steps": 50,
   "eta": 0.0,
@@ -7,32 +7,32 @@
   "results": [
     {
       "cfg_scale": 0.0,
-      "clip_score": 29.578912258148193,
+      "clip_score": 30.573785305023193,
       "image_path": "results/step3_results/part_d/part_d_cfg_0.0.png"
     },
     {
       "cfg_scale": 2.0,
-      "clip_score": 26.92570686340332,
+      "clip_score": 29.254671931266785,
       "image_path": "results/step3_results/part_d/part_d_cfg_2.0.png"
     },
     {
       "cfg_scale": 5.0,
-      "clip_score": 26.705893874168396,
+      "clip_score": 34.11915302276611,
       "image_path": "results/step3_results/part_d/part_d_cfg_5.0.png"
     },
     {
       "cfg_scale": 8.0,
-      "clip_score": 29.795339703559875,
+      "clip_score": 35.12074947357178,
       "image_path": "results/step3_results/part_d/part_d_cfg_8.0.png"
     },
     {
       "cfg_scale": 12.0,
-      "clip_score": 31.220409274101257,
+      "clip_score": 34.42128896713257,
       "image_path": "results/step3_results/part_d/part_d_cfg_12.0.png"
     },
     {
       "cfg_scale": 15.0,
-      "clip_score": 30.897486209869385,
+      "clip_score": 34.18392539024353,
       "image_path": "results/step3_results/part_d/part_d_cfg_15.0.png"
     }
   ]
