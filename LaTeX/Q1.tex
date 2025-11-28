@@ -1,4 +1,7 @@
 \subsection{Posterior Samplers for Inverse Problems}
+for each of the following tasks, I got results for three images from each of the two datastes, for each of the four inverse problems. I will only be including one image from each dataset for each task in the report, but the full results are included in the zip file submission. Please refer to the appendix for the images corresponding to each method and dataset. I will report the PSNR, SSIM, and LPIPS for the images shown in the report, but the full results across all three images are also included in the zip file submission.
+
+I used my lab's server to generate the images for this task, which has an NVIDIA A6000, with 1TB ram and 128 CPU cores. 
 % Step 1 (35 points): Posterior Samplers for Inverse Problems
 % Your first task is to implement and compare different posterior sampling methods for solving
 % inverse problems using a pre-trained ADM model1 (Dhariwal & Nichol, 2021) from HW3.
@@ -42,26 +45,27 @@
 % five different samples from each network in a 2 × 5 grid.
 % 2
 
-I implemened the DDIM from HW3, the results are shown in Figure\~\ref{fig:uncond_samples}.
+I implemened the DDIM from HW3, the results are shown in Figure~\ref{fig:uncond_samples}. The images generated look qualitatively similar to those from HW3, and the model for each dataset creates images from that distrobution.
 
-begin{figure}[h]
+\begin{figure*}[ht]
     \centering
-    % 5x2 grid of images
-    \begin{tabular}{ccccc}
-        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/unconditional/sample_1.png} &
-        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/unconditional/sample_2.png} &
-        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/unconditional/sample_3.png} &
-        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/unconditional/sample_4.png} &
-        \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA-HQ/unconditional/sample_5.png} \\
-        \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_1.png} &
-        \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_2.png} &
-        \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_3.png} &
-        \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_4.png} &
-        \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_5.png} \\ 
-    \end{tabular}
+    % CelebA-HQ samples (top row)
+    \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA_HQ/unconditional/sample_1.png}\hspace{2mm}
+    \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA_HQ/unconditional/sample_2.png}\hspace{2mm}
+    \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA_HQ/unconditional/sample_3.png}\hspace{2mm}
+    \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA_HQ/unconditional/sample_4.png}\hspace{2mm}
+    \includegraphics[width=0.18\textwidth]{images/step1_results/CelebA_HQ/unconditional/sample_5.png}
+    \\[2mm]
+    % ImageNet samples (bottom row)
+    \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_1.png}\hspace{2mm}
+    \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_2.png}\hspace{2mm}
+    \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_3.png}\hspace{2mm}
+    \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_4.png}\hspace{2mm}
+    \includegraphics[width=0.18\textwidth]{images/step1_results/ImageNet/unconditional/sample_5.png}
     \caption{Unconditional samples from CelebA-HQ (top row) and ImageNet (bottom row) pretrained ADM models using DDIM sampling with 1000 steps.}
     \label{fig:uncond_samples}
-\end{figure}
+\end{figure*}
+
 
 
 
@@ -95,41 +99,49 @@ begin{figure}[h]
 % Do you obtain similar results for inpainting tasks as for super-resolution tasks? If
 % not, why might that be the case?
 
-I found that an ILVR weight of 0.8 worked well during initial tests, so I used that value for all tasks. 
+I found that an ILVR weight of 0.8 worked well during initial tests, so I used that value for all tasks. For this task I inlcuded the results from CelebA-HQ and ImageNet datasets in Figures~\ref{fig:ilvr_celeba} and \ref{fig:ilvr_imagenet}. 
 
-\begin{figure}
-    \centering
-    % 4 columns: SRx4, SRx8, Random Inpainting, Box Inpainting
-    \begin{tabular}{cccc}
-        % SRx4
-        \begin{tabular}{c}
-            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/SR_x4/recon_1.png} \\
-            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/SR_x4/recon_2.png} \\
-            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/SR_x4/recon_3.png} \\
-        \end{tabular} &
-        % SRx8
-        \begin{tabular}{c}
-            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/SR_x8/recon_1.png} \\
-            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/SR_x8/recon_2.png} \\
-            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/SR_x8/recon_3.png} \\
-        \end{tabular} &
-        % Random Inpainting
-        \begin{tabular}{c}
-            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/Inpainting_random_80pct/recon_1.png} \\
-            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/Inpainting_random_80pct/recon_2.png} \\
-            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/Inpainting_random_80pct/recon_3.png} \\
-        \end{tabular} &
-        % Box Inpainting
-        \begin{tabular}{c}
-            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/Inpainting_box/recon_1.png} \\
-            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/Inpainting_box/recon_2.png} \\
-            \includegraphics[width=0.22\textwidth]{images/step1_results/CelebA-HQ/ILVR/Inpainting_box/recon_3.png} \\
-        \end{tabular} \\
-    \end{tabular}
-    \caption{ILVR Reconstructions on CelebA-HQ}.
-    \label{fig:ilvr_celeba}
-\end{figure}
+The CelebA model had an average performance of:
+\begin{list}{-}{ }
+    \item Time: 50s
+    \item SRx4:
+    \subitem PSNR: 30.97
+    \subitem SSIM: 0.880
+    \subitem LPIPS: 0.0729
+    \item SRx8:
+    \subitem PSNR: 26.44
+    \subitem SSIM: 0.7464
+    \subitem LPIPS: 0.1243
+    \item 80\% random inpainting:
+    \subitem PSNR: 20.86
+    \subitem SSIM: 0.5541
+    \subitem LPIPS: 0.4891
+    \item 128x128 box inpainting:
+    \subitem PSNR: 20.33
+    \subitem SSIM: 0.8244
+    \subitem LPIPS: 0.1231
+\end{list}
 
+The ImageNet model had an average performance of:
+\begin{list}{-}{ }
+    \item Time: 176s
+    \item SRx4:
+        \subitem PSNR: 25.33
+        \subitem SSIM: 0.735
+        \subitem LPIPS: 0.2653
+    \item SRx8:
+        \subitem PSNR: 22.10
+        \subitem SSIM: 0.5647
+        \subitem LPIPS: 0.2642
+    \item 80\% random inpainting:
+        \subitem PSNR: 15.95
+        \subitem SSIM: 0.1889
+        \subitem LPIPS: 0.9146
+    \item 128x128 box inpainting:
+        \subitem PSNR: 17.23
+        \subitem SSIM: 0.7826
+        \subitem LPIPS: 0.2218
+\end{list}
 
 
 \subsubsection{C: Manifold Constrained Gradient (MCG)}  
@@ -152,6 +164,50 @@ I found that an ILVR weight of 0.8 worked well during initial tests, so I used t
 % Compare the speed and quality to ILVR. Do you see consistent performance across
 % restoration tasks this time? Although MCG also requires 1000 sampling (denois-
 % ing) steps, do you notice any slowness compared to ILVR? Discuss.
+
+MCG produced 
+
+\begin{list}{-}{ }
+    \item Time: 55s
+    \item SRx4:
+        \subitem PSNR: 19.68
+        \subitem SSIM: 0.8047
+        \subitem LPIPS: 0.1846
+    \item SRx8:
+        \subitem PSNR: 25.68
+        \subitem SSIM: 0.7404
+        \subitem LPIPS: 0.1335
+    \item 80\% random inpainting:
+        \subitem PSNR: 33.40
+        \subitem SSIM: 0.9260
+        \subitem LPIPS: 0.0359
+    \item 128x128 box inpainting:
+        \subitem PSNR: 19.68
+        \subitem SSIM:0.8047
+        \subitem LPIPS: 0.1856
+\end{list}
+
+
+
+\begin{list}{-}{ }
+    \item Time: 178s
+    \item SRx4:
+        \subitem PSNR: 12.75
+        \subitem SSIM: 0.3567
+        \subitem LPIPS: 0.6224
+    \item SRx8:
+        \subitem PSNR: 14.46
+        \subitem SSIM: 0.3693
+        \subitem LPIPS: 0.4716
+    \item 80\% random inpainting:
+        \subitem PSNR: 23.98
+        \subitem SSIM: 0.7838
+        \subitem LPIPS: 0.2242
+    \item 128x128 box inpainting:
+        \subitem PSNR: 14.11
+        \subitem SSIM: 0.7472
+        \subitem LPIPS: 0.3034
+\end{list}
 
 
 
@@ -176,6 +232,46 @@ I found that an ILVR weight of 0.8 worked well during initial tests, so I used t
 % • Discuss the observed performance and report the restoration time per image.
 % Compare the speed and quality to ILVR and MCG.
 
+\begin{list}{-}{ }
+    \item Time: 3s
+    \item SRx4:
+        \subitem PSNR: 18.25
+        \subitem SSIM: 0.2746
+        \subitem LPIPS: 0.8742
+    \item SRx8:
+        \subitem PSNR: 17.02
+        \subitem SSIM: 0.2033
+        \subitem LPIPS: 1.0188
+    \item 80\% random inpainting:
+        \subitem PSNR: 10.87
+        \subitem SSIM: 0.0629
+        \subitem LPIPS: 14.827
+    \item 128x128 box inpainting:
+        \subitem PSNR: 15.83
+        \subitem SSIM: 0.7219
+        \subitem LPIPS: 0.5116
+\end{list}
+
+\begin{list}{-}{ }
+    \item Time: 9s
+    \item SRx4:
+        \subitem PSNR: 13.33
+        \subitem SSIM: 0.3296
+        \subitem LPIPS: 0.8221
+    \item SRx8:
+        \subitem PSNR: 12.76
+        \subitem SSIM: 0.2855
+        \subitem LPIPS: 0.9485
+    \item 80\% random inpainting:
+        \subitem PSNR: 8.03
+        \subitem SSIM: 0.0324
+        \subitem LPIPS: 1.4114
+    \item 128x128 box inpainting:
+        \subitem PSNR: 13.24
+        \subitem SSIM: 0.7202
+        \subitem LPIPS: 0.5390
+\end{list}
+
 \subsubsection{E: Noisy measurements and Diffusion Posterior Sampling (DPS)}
 % (e) [5 pts] Add noise to the measurements with σy = 0.05 (use --sigma y). Repeat steps
 % (b), (c), and (d) only for the SR×4 and box inpainting tasks on a single dataset (either
@@ -184,7 +280,55 @@ I found that an ILVR weight of 0.8 worked well during initial tests, so I used t
 % the drop in performance more pronounced for one inverse task compared to the other
 % (SR×4 vs box inpainting)? Explain your reasoning for each case.
 
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ_1E/Noisy_ILVR/SR_x4/recon_3.png}
+%     \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/Noisy_ILVR/Inpainting_box/recon_3.png}
+%     \caption{ILVR Reconstructions on CelebA-HQ with noisy measurements for SRx4 and 128x128 box inpainting.}
+%     \label{fig:noisy_ilvr_celeba}
+% \end{figure}
 
+
+\begin{list}{-}{ }
+    \item Time:
+    \item SRx4:
+        \subitem PSNR:
+        \subitem SSIM:
+        \subitem LPIPS:
+    \item SRx8:
+        \subitem PSNR:
+        \subitem SSIM:
+        \subitem LPIPS:
+    \item 80\% random inpainting:
+        \subitem PSNR:
+        \subitem SSIM:
+        \subitem LPIPS:
+    \item 128x128 box inpainting:
+        \subitem PSNR:
+        \subitem SSIM:
+        \subitem LPIPS:
+\end{list}
+
+
+\begin{list}{-}{ }
+    \item Time:
+    \item SRx4:
+        \subitem PSNR:
+        \subitem SSIM:
+        \subitem LPIPS:
+    \item SRx8:
+        \subitem PSNR:
+        \subitem SSIM:
+        \subitem LPIPS:
+    \item 80\% random inpainting:
+        \subitem PSNR:
+        \subitem SSIM:
+        \subitem LPIPS:
+    \item 128x128 box inpainting:
+        \subitem PSNR:
+        \subitem SSIM:
+        \subitem LPIPS:
+\end{list}
 
 
 \subsubsection{F: Diffusion Posterior Sampling (DPS) for noisy measurements}
@@ -202,3 +346,45 @@ I found that an ILVR weight of 0.8 worked well during initial tests, so I used t
 % • Discuss the observed performance and report the restoration time per image.
 % Compare the speed and quality to ILVR, MCG and DDNM. Do you see improved
 % performance across noisy conditions? Discuss
+
+
+\begin{list}{-}{ }
+    \item Time: 55s
+    \item SRx4:
+        \subitem PSNR: 22.94
+        \subitem SSIM: 0.7031
+        \subitem LPIPS: 0.2730
+    \item SRx8:
+        \subitem PSNR: 26.43
+        \subitem SSIM: 0.7592
+        \subitem LPIPS: 0.1143
+    \item 80\% random inpainting:
+        \subitem PSNR: 19.02
+        \subitem SSIM: 0.7389
+        \subitem LPIPS: 0.3173
+    \item 128x128 box inpainting:
+        \subitem PSNR: 11.92
+        \subitem SSIM: 0.3863
+        \subitem LPIPS: 0.5397
+\end{list}
+
+
+\begin{list}{-}{ }
+    \item Time: 177s
+    \item SRx4:
+        \subitem PSNR: 13.22
+        \subitem SSIM: 0.3813
+        \subitem LPIPS: 0.4515
+    \item SRx8:
+        \subitem PSNR: 16.65
+        \subitem SSIM: 0.4041
+        \subitem LPIPS: 0.3862
+    \item 80\% random inpainting:
+        \subitem PSNR: 19.34
+        \subitem SSIM: 0.5619
+        \subitem LPIPS: 0.4727
+    \item 128x128 box inpainting:
+        \subitem PSNR: 13.69
+        \subitem SSIM: 0.5530
+        \subitem LPIPS: 0.4243
+\end{list}
