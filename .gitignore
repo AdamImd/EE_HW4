@@ -22,4 +22,9 @@ LaTeX/tmp
 
 # results/
 
+out
+*.big
+*.zip
+
+
 step1_utils/data
