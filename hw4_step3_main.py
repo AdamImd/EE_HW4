@@ -479,10 +479,10 @@ def run_part_d(pipe, clip_model, clip_processor, save_dir: str, seed: int = 42):
     
     # Select one prompt (using the detailed space exploration prompt)
     prompts = get_prompts()
-    selected_prompt = prompts["futuristic_city"]["medium"]
+    selected_prompt = prompts["space_exploration"]["medium"]
     
     # Meaningful negative prompt to avoid common artifacts and unwanted elements
-    negative_prompt = "blurry, low quality, distorted, ugly, deformed, bad anatomy, low resolution, grainy, noisy, watermark, text, signature, poorly drawn, amateur, disfigured"
+    negative_prompt = "blob, blurry, low-definition, water, clouds, fingers"
     
     cfg_scales = [0.0, 2.0, 5.0, 8.0, 12.0, 15.0]
     results = []

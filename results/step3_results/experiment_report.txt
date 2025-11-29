@@ -7,57 +7,57 @@ PART B: 15 Prompts Generation Results
 --------------------------------------------------
 
 Space Exploration:
-  Simple     | CLIP:  32.7% | Manual: 7.5/10
-  Medium     | CLIP:  35.5% | Manual: 8.0/10
-  Detailed   | CLIP:  32.8% | Manual: 7.0/10
+  Simple     | CLIP:  28.5% | Manual: 7.5/10
+  Medium     | CLIP:  32.7% | Manual: 8.0/10
+  Detailed   | CLIP:  33.7% | Manual: 7.0/10
 
 Underwater World:
-  Simple     | CLIP:  33.9% | Manual: 8.0/10
-  Medium     | CLIP:  32.1% | Manual: 8.5/10
-  Detailed   | CLIP:  31.6% | Manual: 7.5/10
+  Simple     | CLIP:  31.4% | Manual: 8.0/10
+  Medium     | CLIP:  32.9% | Manual: 8.5/10
+  Detailed   | CLIP:  30.3% | Manual: 7.5/10
 
 Ancient Architecture:
-  Simple     | CLIP:  33.5% | Manual: 8.5/10
-  Medium     | CLIP:  29.6% | Manual: 9.0/10
-  Detailed   | CLIP:  34.5% | Manual: 8.0/10
+  Simple     | CLIP:  29.4% | Manual: 8.5/10
+  Medium     | CLIP:  32.0% | Manual: 9.0/10
+  Detailed   | CLIP:  30.4% | Manual: 8.0/10
 
 Futuristic City:
-  Simple     | CLIP:  35.8% | Manual: 7.0/10
-  Medium     | CLIP:  32.9% | Manual: 8.0/10
-  Detailed   | CLIP:  28.1% | Manual: 7.5/10
+  Simple     | CLIP:  33.7% | Manual: 7.0/10
+  Medium     | CLIP:  34.9% | Manual: 8.0/10
+  Detailed   | CLIP:  29.1% | Manual: 7.5/10
 
 Fantasy Creatures:
-  Simple     | CLIP:  34.5% | Manual: 8.0/10
-  Medium     | CLIP:  35.9% | Manual: 8.5/10
-  Detailed   | CLIP:  29.7% | Manual: 7.5/10
+  Simple     | CLIP:  26.0% | Manual: 8.0/10
+  Medium     | CLIP:  27.6% | Manual: 8.5/10
+  Detailed   | CLIP:  38.0% | Manual: 7.5/10
 
 --------------------------------------------------
 PART C: CLIP vs Manual Score Analysis
 --------------------------------------------------
 
 Average Scores by Prompt Complexity:
-  Simple     | CLIP:  34.1% | Manual: 7.8/10
-  Medium     | CLIP:  33.2% | Manual: 8.4/10
-  Detailed   | CLIP:  31.3% | Manual: 7.5/10
+  Simple     | CLIP:  29.8% | Manual: 7.8/10
+  Medium     | CLIP:  32.0% | Manual: 8.4/10
+  Detailed   | CLIP:  32.3% | Manual: 7.5/10
 
-Correlation (CLIP vs Manual): 0.004
+Correlation (CLIP vs Manual): -0.258
 
 --------------------------------------------------
 PART D: CFG Scale Analysis
 --------------------------------------------------
 
 CFG Scale vs CLIP Score:
-  CFG   0.0 | CLIP:  29.6%
-  CFG   2.0 | CLIP:  26.9%
-  CFG   5.0 | CLIP:  26.7%
-  CFG   8.0 | CLIP:  29.8%
-  CFG  12.0 | CLIP:  31.2%
-  CFG  15.0 | CLIP:  30.9%
+  CFG   0.0 | CLIP:  32.8%
+  CFG   2.0 | CLIP:  33.9%
+  CFG   5.0 | CLIP:  33.6%
+  CFG   8.0 | CLIP:  35.6%
+  CFG  12.0 | CLIP:  33.7%
+  CFG  15.0 | CLIP:  33.0%
 
-Best CFG: 12.0 (Score: 31.2%)
-Worst CFG: 5.0 (Score: 26.7%)
-Score Range: 4.5%
-Overall Trend: increasing
+Best CFG: 8.0 (Score: 35.6%)
+Worst CFG: 0.0 (Score: 32.8%)
+Score Range: 2.8%
+Overall Trend: stable
 
 ======================================================================
 END OF REPORT

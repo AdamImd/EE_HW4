@@ -1,38 +1,38 @@
 {
-  "prompt": "A distopian cyberpunk city, with neon lights and flying cars.",
-  "negative_prompt": "blurry, low quality, distorted, ugly, deformed, bad anatomy, low resolution, grainy, noisy, watermark, text, signature, poorly drawn, amateur, disfigured",
+  "prompt": "An astronaut in a spacesuit floating above Earth",
+  "negative_prompt": "blob, blurry, low-definition, water, clouds, fingers",
   "num_steps": 50,
   "eta": 0.0,
   "seed": 42,
   "results": [
     {
       "cfg_scale": 0.0,
-      "clip_score": 30.573785305023193,
+      "clip_score": 32.78586268424988,
       "image_path": "results/step3_results/part_d/part_d_cfg_0.0.png"
     },
     {
       "cfg_scale": 2.0,
-      "clip_score": 29.254671931266785,
+      "clip_score": 33.9347243309021,
       "image_path": "results/step3_results/part_d/part_d_cfg_2.0.png"
     },
     {
       "cfg_scale": 5.0,
-      "clip_score": 34.11915302276611,
+      "clip_score": 33.630236983299255,
       "image_path": "results/step3_results/part_d/part_d_cfg_5.0.png"
     },
     {
       "cfg_scale": 8.0,
-      "clip_score": 35.12074947357178,
+      "clip_score": 35.609930753707886,
       "image_path": "results/step3_results/part_d/part_d_cfg_8.0.png"
     },
     {
       "cfg_scale": 12.0,
-      "clip_score": 34.42128896713257,
+      "clip_score": 33.73188078403473,
       "image_path": "results/step3_results/part_d/part_d_cfg_12.0.png"
     },
     {
       "cfg_scale": 15.0,
-      "clip_score": 34.18392539024353,
+      "clip_score": 32.95994699001312,
       "image_path": "results/step3_results/part_d/part_d_cfg_15.0.png"
     }
   ]
