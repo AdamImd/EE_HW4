@@ -1,10 +1,69 @@
-100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 9.91M/9.91M [00:00<00:00, 25.6MB/s]
-100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 28.9k/28.9k [00:00<00:00, 889kB/s]
-100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1.65M/1.65M [00:00<00:00, 8.39MB/s]
-100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4.54k/4.54k [00:00<00:00, 5.02MB/s]
+==========================================
+Running Step 2 Experiments
+Classifier Guidance (CG) and Classifier-Free Guidance (CFG)
+==========================================
+
+----------------------------------------
+Running with guidance scale: 0.0
+----------------------------------------
 [ckpt] loaded from step2_utils/mnist_diffusion.pt
 [ckpt] loaded from step2_utils/mnist_classifier.pt
 
 === Results ===
-Classifier Acc on CG  samples: 0.080 | Diversity: 0.605
-Classifier Acc on CFG samples: 0.080 | Diversity: 0.605
+Classifier Acc on CG  samples: 0.120 | Diversity: 0.802
+Classifier Acc on CFG samples: 0.120 | Diversity: 0.802
+
+Completed scale 0.0
+
+----------------------------------------
+Running with guidance scale: 1.0
+----------------------------------------
+[ckpt] loaded from step2_utils/mnist_diffusion.pt
+[ckpt] loaded from step2_utils/mnist_classifier.pt
+
+=== Results ===
+Classifier Acc on CG  samples: 0.250 | Diversity: 0.790
+Classifier Acc on CFG samples: 0.210 | Diversity: 0.796
+
+Completed scale 1.0
+
+----------------------------------------
+Running with guidance scale: 3.0
+----------------------------------------
+[ckpt] loaded from step2_utils/mnist_diffusion.pt
+[ckpt] loaded from step2_utils/mnist_classifier.pt
+
+=== Results ===
+Classifier Acc on CG  samples: 0.500 | Diversity: 0.710
+Classifier Acc on CFG samples: 0.500 | Diversity: 0.704
+
+Completed scale 3.0
+
+----------------------------------------
+Running with guidance scale: 5.0
+----------------------------------------
+[ckpt] loaded from step2_utils/mnist_diffusion.pt
+[ckpt] loaded from step2_utils/mnist_classifier.pt
+
+=== Results ===
+Classifier Acc on CG  samples: 0.780 | Diversity: 0.618
+Classifier Acc on CFG samples: 0.830 | Diversity: 0.566
+
+Completed scale 5.0
+
+----------------------------------------
+Running with guidance scale: 10.0
+----------------------------------------
+[ckpt] loaded from step2_utils/mnist_diffusion.pt
+[ckpt] loaded from step2_utils/mnist_classifier.pt
+
+=== Results ===
+Classifier Acc on CG  samples: 0.990 | Diversity: 0.493
+Classifier Acc on CFG samples: 0.980 | Diversity: 0.365
+
+Completed scale 10.0
+
+==========================================
+All experiments completed!
+Results saved in results/step2_results/
+==========================================
