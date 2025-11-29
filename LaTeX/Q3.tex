@@ -37,31 +37,31 @@ For the no-prompt generation, I used the same model as in part B, with the param
 I implemented a pipeline that will read from a set of prompts, and then use them to generate the images from the diffusers StableDiffusionPipeline module, with the $\omega CFG = 10$, num steps = 50, $eta = 0.0$, and a fixed seed at 42. The prompts for each image are included in the caption of the figures. 
 
 \begin{itemize}
-    \item Space Exploration
+    \item Space
         \begin{itemize}
             \item Simple: Human: 5/10, CLIP: 28.49
             \item Medium: Human: 8/10, CLIP: 32.65
             \item Detailed: Human: 9/10, CLIP: 33.75
         \end{itemize}
-    \item Underwater World
+    \item Ocean
         \begin{itemize}
             \item Simple: Human: 9/10, CLIP: 31.39
             \item Medium: Human: 6/10, CLIP: 32.93
             \item Detailed: Human: 5/10, CLIP: 30.34
         \end{itemize}
-    \item Ancient Architecture
+    \item Castle
         \begin{itemize}
             \item Simple: Human: 8/10, CLIP: 29.36
             \item Medium: Human: 7/10, CLIP: 31.98
             \item Detailed: Human: 9/10, CLIP: 30.38
         \end{itemize}
-    \item Futuristic City
+    \item Cyberpunk
         \begin{itemize}
             \item Simple: Human: 8/10, CLIP: 33.70
             \item Medium: Human: 8/10, CLIP: 34.95
             \item Detailed: Human: 7/10, CLIP: 29.07
         \end{itemize}
-    \item Fantasy Creatures
+    \item Cat-Bird
         \begin{itemize}
             \item Simple: Human: 2/10, CLIP: 25.97
             \item Medium: Human: 2/10, CLIP: 27.57
@@ -74,7 +74,7 @@ I implemented a pipeline that will read from a set of prompts, and then use them
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_space_exploration_simple.png}
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_space_exploration_medium.png}
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_space_exploration_detailed.png}
-    \caption{Space Exploration. \textbf{Left:} Simple - "An astronaut in space" (Human: 5/10, CLIP: 28.49). \textbf{Center:} Medium - "An astronaut in a spacesuit floating above Earth" (Human: 8/10, CLIP: 32.65). \textbf{Right:} Detailed - "A single astronaut in a shiny white spacesuit drifting serenely against the stars in the sky. There is a silent planet below with swirling clouds and blue oceans, with their ship orbiting in the distance" (Human: 9/10, CLIP: 33.75).}
+    \caption{Space. \textbf{Left:} Simple - "An astronaut in space" (Human: 5/10, CLIP: 28.49). \textbf{Center:} Medium - "An astronaut in a spacesuit floating above Earth" (Human: 8/10, CLIP: 32.65). \textbf{Right:} Detailed - "A single astronaut in a shiny white spacesuit drifting serenely against the stars in the sky. There is a silent planet below with swirling clouds and blue oceans, with their ship orbiting in the distance" (Human: 9/10, CLIP: 33.75).}
 \end{figure}
 
 \begin{figure}[h]
@@ -82,7 +82,7 @@ I implemented a pipeline that will read from a set of prompts, and then use them
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_underwater_world_simple.png}
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_underwater_world_medium.png}
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_underwater_world_detailed.png}
-    \caption{Underwater World. \textbf{Left:} Simple - "A coral reef" (Human: 9/10, CLIP: 31.39). \textbf{Center:} Medium - "A colorful coral reef with tropical fish of and sunlight filtering through the water" (Human: 6/10, CLIP: 32.93). \textbf{Right:} Detailed - "An underwater coral reef that has all sorts of life, with many fish and sharks swimming around. It has bright corals of all colors and shapes, with sunlight filtering through the clear blue water from above." (Human: 5/10, CLIP: 30.34).}
+    \caption{Ocean. \textbf{Left:} Simple - "A coral reef" (Human: 9/10, CLIP: 31.39). \textbf{Center:} Medium - "A colorful coral reef with tropical fish of and sunlight filtering through the water" (Human: 6/10, CLIP: 32.93). \textbf{Right:} Detailed - "An underwater coral reef that has all sorts of life, with many fish and sharks swimming around. It has bright corals of all colors and shapes, with sunlight filtering through the clear blue water from above." (Human: 5/10, CLIP: 30.34).}
 \end{figure}
 
 \begin{figure}[h]
@@ -90,7 +90,7 @@ I implemented a pipeline that will read from a set of prompts, and then use them
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_ancient_architecture_simple.png}
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_ancient_architecture_medium.png}
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_ancient_architecture_detailed.png}
-    \caption{Ancient Architecture. \textbf{Left:} Simple - "A medieval castle" (Human: 8/10, CLIP: 29.36). \textbf{Center:} Medium - "A lively medieval castle surrounded by a moat and lush greenery" (Human: 7/10, CLIP: 31.98). \textbf{Right:} Detailed - "A beautyful german day, with a large castle made of stone, with a few vines climbing up the spires. The vilage around the castle is full of life, with people walking around the market." (Human: 9/10, CLIP: 30.38).}
+    \caption{Castle. \textbf{Left:} Simple - "A medieval castle" (Human: 8/10, CLIP: 29.36). \textbf{Center:} Medium - "A lively medieval castle surrounded by a moat and lush greenery" (Human: 7/10, CLIP: 31.98). \textbf{Right:} Detailed - "A beautyful german day, with a large castle made of stone, with a few vines climbing up the spires. The vilage around the castle is full of life, with people walking around the market." (Human: 9/10, CLIP: 30.38).}
 \end{figure}
 
 \begin{figure}[h]
@@ -98,7 +98,7 @@ I implemented a pipeline that will read from a set of prompts, and then use them
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_futuristic_city_simple.png}
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_futuristic_city_medium.png}
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_futuristic_city_detailed.png}
-    \caption{Futuristic City. \textbf{Left:} Simple - "A cyberpunk city" (Human: 8/10, CLIP: 33.70). \textbf{Center:} Medium - "A distopian cyberpunk city, with neon lights and flying cars." (Human: 8/10, CLIP: 34.95). \textbf{Right:} Detailed - "A breathtaking cyberpunk megacity that has bustling streets filled with people and vendors. The skyline has many towering skyscrapers, and there are futuristic flying cars." (Human: 7/10, CLIP: 29.07).}
+    \caption{Cyberpunk. \textbf{Left:} Simple - "A cyberpunk city" (Human: 8/10, CLIP: 33.70). \textbf{Center:} Medium - "A distopian cyberpunk city, with neon lights and flying cars." (Human: 8/10, CLIP: 34.95). \textbf{Right:} Detailed - "A breathtaking cyberpunk megacity that has bustling streets filled with people and vendors. The skyline has many towering skyscrapers, and there are futuristic flying cars." (Human: 7/10, CLIP: 29.07).}
 \end{figure}
 
 \begin{figure}[h]
@@ -106,7 +106,7 @@ I implemented a pipeline that will read from a set of prompts, and then use them
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_fantasy_creatures_simple.png}
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_fantasy_creatures_medium.png}
     \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_fantasy_creatures_detailed.png}
-    \caption{Fantasy Creatures. \textbf{Left:} Simple - "A cat with a bird body" (Human: 2/10, CLIP: 25.97). \textbf{Center:} Medium - "A chimera with the body of a cat, wings of a bird." (Human: 2/10, CLIP: 27.57). \textbf{Right:} Detailed - "A beautiful chimera creature that has the body of a maine coon cat, with large majestic wings of an eagle." (Human: 6/10, CLIP: 37.96).}
+    \caption{Cat-Bird. \textbf{Left:} Simple - "A cat with a bird body" (Human: 2/10, CLIP: 25.97). \textbf{Center:} Medium - "A chimera with the body of a cat, wings of a bird." (Human: 2/10, CLIP: 27.57). \textbf{Right:} Detailed - "A beautiful chimera creature that has the body of a maine coon cat, with large majestic wings of an eagle." (Human: 6/10, CLIP: 37.96).}
 \end{figure}
 
 
@@ -134,4 +134,28 @@ The CLIP and the human scores are pretty well alligned in terms of relitive chan
 % {0.0, 2.0, 5.0, 8.0, 12.0, 15.0}. Report the generated images and their corresponding
 % CLIP similarity scores. Comment on them.
 
-I chose the prompt: "An astronaut in a spacesuit floating above Earth"
+I chose the prompt: "An astronaut in a spacesuit floating above Earth" with the negative prompt: "blob, blurry, low-definition, water, clouds, fingers" because the original image had a odd blob on the plannet, and I wanted to see if it could remove the fingers. The results are shown in figure \ref{fig:q3D}.
+
+CFG Scale vs CLIP Score results:
+\begin{itemize}
+    \item CFG 0.0: CLIP Score 32.8\%
+    \item CFG 2.0: CLIP Score 33.9\%
+    \item CFG 5.0: CLIP Score 33.6\%
+    \item CFG 8.0: CLIP Score 35.6\%
+    \item CFG 12.0: CLIP Score 33.7\%
+    \item CFG 15.0: CLIP Score 33.0\%
+\end{itemize}
+
+At CFG 0, the image is very noisy and low quality, and it does not look like it is on the image manifold. As the CFG increases, the astronaut looks more realistic, where at 5 it looks the best. At 5, there is no longer any water on the plannet, and the fingers are gone as was in the negative prompt. At higher CFG, the image becomes a bit degenerate, where the saturation increases, where at 15 the planet is no longer round. This makes sense because at high CFG, there is too much emphasis on the prompt, potentially driving the image off the manifold.
+
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_d/part_d_cfg_0.0.png}
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_d/part_d_cfg_2.0.png}
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_d/part_d_cfg_5.0.png}\\
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_d/part_d_cfg_8.0.png}
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_d/part_d_cfg_12.0.png}
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_d/part_d_cfg_15.0.png}
+    \caption{Negative Prompt Results for "An astronaut in a spacesuit floating above Earth" with various CFG scales. From top left to bottom right: CFG 0.0 (CLIP: 32.8\%), CFG 2.0 (CLIP: 33.9\%), CFG 5.0 (CLIP: 33.6\%), CFG 8.0 (CLIP: 35.6\%), CFG 12.0 (CLIP: 33.7\%), CFG 15.0 (CLIP: 33.0\%).}
+    \label{fig:q3D}
+\end{figure*}

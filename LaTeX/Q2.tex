@@ -1,0 +1,43 @@
+\section{Conditioning Diffusion}
+% Your next task is to explore two key conditioning mechanisms used in modern diffusion
+% models: classifier guidance (CG) (Dhariwal & Nichol, 2021) and classifier-free guidance
+% (CFG) (Ho & Salimans, 2021). Both techniques allow diffusion models to steer the generation
+% process toward a desired class or concept, but they achieve this through fundamentally
+% different principles.
+% To help you get started, we have provided the skeleton code for class-conditional sampling
+% (hw4 step2 main.py) along with a lightweight diffusion model and a noise-aware classifier
+% codes under the folder step2 utils. We further provided pre-trained networks for each but
+% you can also train them from scratch if desired.
+% Your task is to complete the implementation of the two missing sampling methods. Make
+% sure to check the lines with the #TODO flag inside the hw4 step2 main.py file in order to
+% complete the code. Your goals for this step are as follows:
+
+
+
+% (a) [7 pts] Implement sample cg() to perform Classifier Guidance (CG) sampling, where
+% the guidance signal is obtained from the gradient of the noise-aware classifier:
+% √
+% ϵ̃ = ϵθ (xt , t, ∅) − ωCG · 1 − ᾱt ∇xt log pϕ (y|xt , t),
+% where ωCG is the guidance scale (provided as --cg scale in the parser). Use the reverse
+% update rule of the DDPM parameterization to generate class-conditioned samples for
+% digits 0–9. Present the generated digits in a 10 × 10 grid (each row represents 10
+% samples from a single digit), varying ωCG ∈ {0.0, 1.0, 3.0, 5.0, 10.0} to visualize the
+% strength of guidance.
+% (b) [7 pts] Implement sample cfg() to perform Classifier-Free Guidance (CFG) sampling.
+% Use the unconditional and conditional noise predictions from the diffusion model and
+% combine them according to:
+% ϵ̃ = ϵθ (xt , t, ∅) + ωCFG · (ϵθ (xt , t, c) − ϵθ (xt , t, ∅)),
+% where ωCFG is the guidance scale (provided as --cfg scale in the parser). Follow the
+% same reverse update as in the DDPM case, and visualize the generated digits in a
+% 10 × 10 grid for ωCG ∈ {0.0, 1.0, 3.0, 5.0, 10.0}.
+% (c) [6 pts] Compare the outputs of CFG and CG both qualitatively and quantitatively.
+% For each method, compute:
+% • Classification accuracy of the generated images using the provided noise-aware
+% classifier.
+% • Intra-class diversity using the intraclass diversity cosine() metric (already
+% implemented for you).
+% Reflect on your findings. How does the guidance scale influence sample quality and
+% diversity in each method? Which method do you find more stable or visually consistent
+% across classes? Based on your implementations and observations, explain the funda-
+% mental difference between CG and CFG. Why do you think CFG is more popular for
+% text-to-image generation?
