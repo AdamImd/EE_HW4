@@ -41,3 +41,56 @@
 % across classes? Based on your implementations and observations, explain the funda-
 % mental difference between CG and CFG. Why do you think CFG is more popular for
 % text-to-image generation?
+
+\subsection{Implementation and Results}
+
+I implemented both methods.. The samples used guidances of $\omega \in \{0.0, 1.0, 3.0, 5.0, 10.0\}$ for 1000 sampling steps. The results for CG are shown in Figure~\ref{fig:cg_results} and for CFG in Figure~\ref{fig:cfg_results}.
+
+The accuracies are shown belwon in Table~\ref{tab:results} along with the intra-class diversity scores.
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Scale} & \textbf{CG Acc.} & \textbf{CG Div.} & \textbf{CFG Acc.} & \textbf{CFG Div.} \\
+\hline
+0.0  & 0.080 & 0.605 & 0.080 & 0.605 \\
+1.0  & 0.580 & 0.504 & 0.800 & 0.417 \\
+3.0  & 0.880 & 0.400 & 1.000 & 0.199 \\
+5.0  & 0.930 & 0.364 & 1.000 & 0.146 \\
+10.0 & 0.980 & 0.331 & 1.000 & 0.109 \\
+\hline
+\end{tabular}
+\caption{Accuracy and diversity for CG and CFG across different guidance scales.}
+\label{tab:results}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.19\textwidth]{../results/step2_results/mnist_cg_0.0.png}
+    \includegraphics[width=0.19\textwidth]{../results/step2_results/mnist_cg_1.0.png}
+    \includegraphics[width=0.19\textwidth]{../results/step2_results/mnist_cg_3.0.png}
+    \includegraphics[width=0.19\textwidth]{../results/step2_results/mnist_cg_5.0.png}
+    \includegraphics[width=0.19\textwidth]{../results/step2_results/mnist_cg_10.0.png}
+    \caption{Classifier Guidance (CG) results. From left to right, top to bottom: $\omega_{CG} = 0.0, 1.0, 3.0, 5.0, 10.0$. Each grid shows 10 samples per digit class (rows 0-9).}
+    \label{fig:cg_results}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.19\textwidth]{../results/step2_results/mnist_cfg_0.0.png}
+    \includegraphics[width=0.19\textwidth]{../results/step2_results/mnist_cfg_1.0.png}
+    \includegraphics[width=0.19\textwidth]{../results/step2_results/mnist_cfg_3.0.png}
+    \includegraphics[width=0.19\textwidth]{../results/step2_results/mnist_cfg_5.0.png}
+    \includegraphics[width=0.19\textwidth]{../results/step2_results/mnist_cfg_10.0.png}
+    \caption{Classifier-Free Guidance (CFG) results. From left to right, top to bottom: $\omega_{CFG} = 0.0, 1.0, 3.0, 5.0, 10.0$. Each grid shows 10 samples per digit class (rows 0-9).}
+    \label{fig:cfg_results}
+\end{figure}
+
+\subsubsection{Reflections}
+From the results, The CFG got higher accuracies at lower guidance scales compared to CG. However, this came at the cost of diversity, as the CFG samples had lower intra-class diversity scores, especially at higher guidance scales. 
+
+Both models had the trend of increasing accuracy and decreasing diversity as the guidance scale increased. This makes sense beause a higher guidance makes the model move twards the class manifold, potentially reducing the entropy available for diversity. The higher the proprity of the class, the less important the original noise was influencing the sample.
+
+CFG is the most stable, but all the digits look very similar to each other. However, if I had to choose, CG 10.0 looks the most diverse and accurate given all the configurations. 
+
+The fundamental difference between these methods is that CG has external classification that pushes the sample twards the class, wheras the CFG uses the internal knowledge of the model to steer the sample. This is better for many modern applications as text is more diverse and does not have discrete classes, so CG would be difficult to implement. 
