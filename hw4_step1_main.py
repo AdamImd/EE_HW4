@@ -33,7 +33,7 @@ class Config:
         self.parser.add_argument('--schedule', type=str, default="1000", help="regular/irregular schedule to use (jumps)")
         
         # hyperparameters for algos
-        self.parser.add_argument('--ps_type', type=str, default="ILVR", help="choose from unconditional, ILVR, MCG, DDNM, DPS")
+        self.parser.add_argument('--ps_type', type=str, default="ILVR", help="choose from projection, DPS, DDNM")
         self.parser.add_argument('--degradation', type=str, default='Inpainting', help='SR or Inpainting')
         self.parser.add_argument('--zeta_ilvr', type=float, default=0.8, help='ILVR weighting parameter (tune heuristically)')
         self.parser.add_argument('--zeta_mcg', type=float, default=0.5, help='MCG gradient step weighting parameter (tune heuristically)')
