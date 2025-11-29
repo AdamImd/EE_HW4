@@ -5,6 +5,14 @@
 % any positive or negative prompt to make sure everything works (this should give you
 % a meaningful image generated unconditionally).
 
+For the no-prompt generation, I used the same model as in part B, with the parameters $\omega CFG = 0.0$, num steps = 50, and $eta = 0.0$, with a fixed seed at 42. The resulting image is shown below.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{../results/step3_results/part_a/part_a_unconditional.png}
+    \caption{No Prompt Image Generation}
+\end{figure}
+
 
 
 \subsection{(B-C) 5X3 prompts- Manual evaluation}
@@ -26,7 +34,7 @@
 % thoughts. For instance, which version of a prompt typically gave the best similarity
 % or image quality? Does prompt length affect fidelity to the intended concept or the
 % final image quality?
-I implemented a pipeline that will read from a set of prompts, and then use them to generate the images from the diffusers StableDiffusionPipeline module, with the $\omega CFG = 10$, num steps = 50, $eta = 0.0$, and a fixed seed at 42. The prompts for each image are included in the caption of the figures. The results for the five categories that I chose are:
+I implemented a pipeline that will read from a set of prompts, and then use them to generate the images from the diffusers StableDiffusionPipeline module, with the $\omega CFG = 10$, num steps = 50, $eta = 0.0$, and a fixed seed at 42. The prompts for each image are included in the caption of the figures. 
 
 \begin{itemize}
     \item Space Exploration
@@ -102,7 +110,10 @@ I implemented a pipeline that will read from a set of prompts, and then use them
 \end{figure}
 
 
+In almost all cases, the most detailed prompts are the best looking images. While the short prompts also did well, the longer prompts alligned better with what I was expecting from the model. I think that in most cases, if you don't know the prompt, the short and long prompts produce images of similar fidelity, which is expected as the model is trained to approach the image manifold similarly, even without a prompt as seen in part A. 
 
+
+The CLIP and the human scores are pretty well alligned in terms of relitive changes. While the scale of the measurements was not alligned well, when the human score changes, the clip score will usually also have a similar change in score, at least in terms of magnitude. 
 
 
 % (c) [8 pts] Implement CLIP-based similarity scoring (Radford et al., 2021) to automat-
