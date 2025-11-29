@@ -55,9 +55,11 @@ def sample_cg(model, clf, sched, cls_labels, num_steps, guidance_scale, device="
         beta_t = sched.betas[t_idx]
         x_prev_mean = (1.0 / torch.sqrt(alpha_t)) * (x_t - (beta_t / sqrt_one_minus_abar_t) * eps_guided)
         
-        sigma_t = torch.sqrt(sched.posterior_variance[t_idx].clamp(min=1e-20))
+        # Add noise except for final step (use beta_t as variance)
         if i < num_steps - 1:
-            x_t = (x_prev_mean + sigma_t * torch.randn_like(x_t)).detach().requires_grad_(True)
+            sigma_t = torch.sqrt(beta_t)
+            noise = torch.randn_like(x_t)
+            x_t = (x_prev_mean + sigma_t * noise).detach().requires_grad_(True)
         else:
             x_t = x_prev_mean.detach()
     return (x_t.clamp(-1,1) + 1)/2
@@ -98,9 +100,11 @@ def sample_cfg(model, sched, cls_labels, num_steps, guidance_scale, device="cpu"
         # Compute mean: μ = (1/sqrt(α_t)) * (x_t - (β_t / sqrt(1 - ᾱ_t)) * ϵ̃)
         x_prev_mean = (1.0 / torch.sqrt(alpha_t)) * (x_t - (beta_t / sqrt_one_minus_abar_t) * eps_guided)
 
-        sigma_t = torch.sqrt(sched.posterior_variance[t_idx].clamp(min=1e-20))
+        # Add noise except for final step (use beta_t as variance)
         if i < num_steps - 1:
-            x_t = x_prev_mean + sigma_t * torch.randn_like(x_t)
+            sigma_t = torch.sqrt(beta_t)
+            noise = torch.randn_like(x_t)
+            x_t = x_prev_mean + sigma_t * noise
         else:
             x_t = x_prev_mean
 

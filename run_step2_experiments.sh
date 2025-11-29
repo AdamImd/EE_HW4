@@ -17,7 +17,7 @@ mkdir -p results/step2_results
 SCALES=(0.0 1.0 3.0 5.0 10.0)
 
 # Number of sampling steps
-SAMPLE_STEPS=100
+SAMPLE_STEPS=1000
 
 # Run experiments for each guidance scale
 for scale in "${SCALES[@]}"; do
