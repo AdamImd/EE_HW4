@@ -1,5 +1,5 @@
 \subsection{Posterior Samplers for Inverse Problems}
-for each of the following tasks, I got results for three images from each of the two datastes, for each of the four inverse problems. I will only be including one image from each dataset for each task in the report, but the full results are included in the zip file submission. Please refer to the appendix for the images corresponding to each method and dataset. I will report the PSNR, SSIM, and LPIPS for the images shown in the report, but the full results across all three images are also included in the zip file submission.
+for each of the following tasks, I got results for three images from each of the two datastes, for each of the four inverse problems. I will only be including one image from each dataset for each task in the report, but the full results are included in the zip file submission. Please refer to the figures for the images corresponding to each method and dataset. I will report the PSNR, SSIM, and LPIPS for the images shown in the report, but the full results across all three images are also included in the zip file submission.
 
 I used my lab's server to generate the images for this task, which has an NVIDIA A6000, with 1TB ram and 128 CPU cores. 
 % Step 1 (35 points): Posterior Samplers for Inverse Problems
@@ -98,12 +98,37 @@ I implemened the DDIM from HW3, the results are shown in Figure~\ref{fig:uncond_
 % • Discuss the observed performance and report the restoration time per image.
 % Do you obtain similar results for inpainting tasks as for super-resolution tasks? If
 % not, why might that be the case?
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/ILVR/SR_x4/recon_3.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/ILVR/SR_x8/recon_3.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/ILVR/Inpainting_random_80pct/recon_3.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/ILVR/Inpainting_box/recon_3.png}
+    \caption{ILVR Reconstructions on CelebA-HQ for SRx4, SRx8, 80\% random inpainting, and 128x128 box inpainting.}
+    \label{fig:ilvr_celeba}
+\end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/ILVR/SR_x4/recon_1.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/ILVR/SR_x8/recon_1.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/ILVR/Inpainting_random_80pct/recon_1.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/ILVR/Inpainting_box/recon_1.png}
+    \caption{ILVR Reconstructions on ImageNet for SRx4, SRx8, 80\% random inpainting, and 128x128 box inpainting.}
+    \label{fig:ilvr_imagenet}
+\end{figure}
+
+
+
+
 
 I found that an ILVR weight of 0.8 worked well during initial tests, so I used that value for all tasks. For this task I inlcuded the results from CelebA-HQ and ImageNet datasets in Figures~\ref{fig:ilvr_celeba} and \ref{fig:ilvr_imagenet}. 
 
 The CelebA model had an average performance of:
 \begin{list}{-}{ }
     \item Time: 50s
+    \item Weight: 0.8
     \item SRx4:
     \subitem PSNR: 30.97
     \subitem SSIM: 0.880
@@ -125,6 +150,7 @@ The CelebA model had an average performance of:
 The ImageNet model had an average performance of:
 \begin{list}{-}{ }
     \item Time: 176s
+    \item Weight: 0.8
     \item SRx4:
         \subitem PSNR: 25.33
         \subitem SSIM: 0.735
@@ -142,6 +168,14 @@ The ImageNet model had an average performance of:
         \subitem SSIM: 0.7826
         \subitem LPIPS: 0.2218
 \end{list}
+
+The ILVR method performed the best out of all the methods I implemented. If I had to guess, this is because the direct projection step makes the best use of the information from the measurement, and keeping the diffusion model step separate allows it to not be biased by the measurement. 
+
+Across the four tasks, the celeba model looked the best visually, and had higher PSNR and SSIM values. The majority of the results I will be talking about qualitatively are from the CelebA model, as the ImageNet model were noiser on average.
+
+For the super-resolution tasks, The model did quite admerably, with the SRx4 task looking very close to the original image, and the SRx8 suprisingly close given how visually different the low-res input was. For the random inpainting task, The noise was still present in the output, but it was noticably cleaner than the input and the noise was around the edges. For the box inpainting task, while the face that was inpainted did not look like Bryan Cranston, I could believe that it was a face. Given the amount of missing information, it is reasonable that the model would not be able to reconstruct Bryan Cranston exactly.
+
+Because of the amount of missing information in the last two tasks, it could be argued that there exist many plausable images that could fit the compresed measurement, so the model should not reasonalby be expected to reconstruct the original image exactly. However, the model still did a good job of creating images that were consistent with the measurements and looked realistic.
 
 
 \subsubsection{C: Manifold Constrained Gradient (MCG)}  
@@ -165,10 +199,42 @@ The ImageNet model had an average performance of:
 % restoration tasks this time? Although MCG also requires 1000 sampling (denois-
 % ing) steps, do you notice any slowness compared to ILVR? Discuss.
 
-MCG produced 
+
+
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/MCG/SR_x4/recon_3.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/MCG/SR_x8/recon_3.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/MCG/Inpainting_random_80pct/recon_3.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/MCG/Inpainting_box/recon_3.png}
+    \caption{MCG Reconstructions on CelebA-HQ for SRx4, SRx8, 80\% random inpainting, and 128x128 box inpainting.}
+    \label{fig:mcg_celeba}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/MCG/SR_x4/recon_1.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/MCG/SR_x8/recon_1.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/MCG/Inpainting_random_80pct/recon_1.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/MCG/Inpainting_box/recon_1.png}
+    \caption{MCG Reconstructions on ImageNet for SRx4, SRx8, 80\% random inpainting, and 128x128 box inpainting.}
+    \label{fig:mcg_imagenet}
+\end{figure}
+
+
+MCG produced some very sharp results for the super resolution tasks, as seen in Figures~\ref{fig:mcg_celeba} and \ref{fig:mcg_imagenet}, but this also resulted in very notable artivacts. These are much worse than in the ILVR results, and the PSNR and SSIM values reflect this, especially for the SRx4 task on the ImageNet model. This is likely because the gradient step pushes the image to be more consistent with the measurement, but might create non realistic images.
+
+For the 80\% random inpainting task, the result was much cleaner, with no residual noise, and that is reflected in the PSNR and SSIM values that were higher for both models, although ImageNet had some artifacting. 
+
+For the box inpainting task, the model failed on both datasetsl, and reconstructed the idea of a face, but it was had a rainbow texture and did not look realistic at all. Image net was not better on this task. It is likely that the gradient step pushed the image away from the data manifold, and the projection step was not able to recover a realistic image.
+
+I think that it might have been a bit slower, but I did not notice a significant difference in speed compared to ILVR on my machine. 
 
 \begin{list}{-}{ }
     \item Time: 55s
+    \item Weight: 0.5
     \item SRx4:
         \subitem PSNR: 19.68
         \subitem SSIM: 0.8047
@@ -191,6 +257,7 @@ MCG produced
 
 \begin{list}{-}{ }
     \item Time: 178s
+    \item Weight: 0.5
     \item SRx4:
         \subitem PSNR: 12.75
         \subitem SSIM: 0.3567
@@ -232,8 +299,37 @@ MCG produced
 % • Discuss the observed performance and report the restoration time per image.
 % Compare the speed and quality to ILVR and MCG.
 
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/DDNM/SR_x4/recon_3.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/DDNM/SR_x8/recon_3.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/DDNM/Inpainting_random_80pct/recon_3.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/DDNM/Inpainting_box/recon_3.png}
+    \caption{DDNM Reconstructions on CelebA-HQ for SRx4, SRx8, 80\% random inpainting, and 128x128 box inpainting.}
+    \label{fig:ddnm_celeba}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/DDNM/SR_x4/recon_1.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/DDNM/SR_x8/recon_1.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/DDNM/Inpainting_random_80pct/recon_1.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/DDNM/Inpainting_box/recon_1.png}
+    \caption{DDNM Reconstructions on ImageNet for SRx4, SRx8, 80\% random inpainting, and 128x128 box inpainting.}
+    \label{fig:ddnm_imagenet}
+\end{figure}
+
+This model was much faster because it only used 100 sampling steps, but the results were proportionally worse than the previous two methods. The results are shown in Figures~\ref{fig:ddnm_celeba} and \ref{fig:ddnm_imagenet}. Comparing the PSNR and SSIM values to ILVR and MCG, they are significantly lower quality and I would not use this method if quality is a priority.
+
+The super-resolution tasks were very noisy, and had a wavey texture to them. While the box inpainting task was able to make the face and origonal image brighter, there was still a lot of noise and very few details. For some reason the random inpainting task was the worst, with almost pure noise in the box. 
+
+One explination for this would be that with only 100 steps, the model is not able to denoise the image enough, resulting in a noisy output. It is also possible I did not find a good weight for the projection step, but I tried a range of values and none produced good results.
+
 \begin{list}{-}{ }
     \item Time: 3s
+    \item Weight: 1.0
     \item SRx4:
         \subitem PSNR: 18.25
         \subitem SSIM: 0.2746
@@ -254,6 +350,7 @@ MCG produced
 
 \begin{list}{-}{ }
     \item Time: 9s
+    \item Weight: 1.0
     \item SRx4:
         \subitem PSNR: 13.33
         \subitem SSIM: 0.3296
@@ -280,55 +377,10 @@ MCG produced
 % the drop in performance more pronounced for one inverse task compared to the other
 % (SR×4 vs box inpainting)? Explain your reasoning for each case.
 
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ_1E/Noisy_ILVR/SR_x4/recon_3.png}
-%     \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/Noisy_ILVR/Inpainting_box/recon_3.png}
-%     \caption{ILVR Reconstructions on CelebA-HQ with noisy measurements for SRx4 and 128x128 box inpainting.}
-%     \label{fig:noisy_ilvr_celeba}
-% \end{figure}
+Refer to the appendix for the figures for the noisy ILVR, MCG, and DDNM results (\ref{fig:noisy_ddnm_celeba_sr_x4}, \ref{fig:noisy_ddnm_celeba_sr_x8}, \ref{fig:noisy_ddnm_celeba_inpainting_random_80pct}, \ref{fig:noisy_ddnm_celeba_inpainting_box}). The genral trend is that the noisy measurements resulted in worse reconstructions across all three methods. We only use the CelebA-HQ dataset for this task. The settings for the three methods were the same as before, with only the addition of noise to the measurements.
 
+For the spesific numbers for the noise statistics, please refer to the figures. We find that the PSNR seems universlly higher, with one exception on the ILVR at 80\% random inpainting task. This seems to indicate that the noise makes it harder to reconstruct the image accurately. However, the images are still reasonable for the super-resolution tasks, but the box inpainting task has less realistic noise patterns inside the box. 
 
-\begin{list}{-}{ }
-    \item Time:
-    \item SRx4:
-        \subitem PSNR:
-        \subitem SSIM:
-        \subitem LPIPS:
-    \item SRx8:
-        \subitem PSNR:
-        \subitem SSIM:
-        \subitem LPIPS:
-    \item 80\% random inpainting:
-        \subitem PSNR:
-        \subitem SSIM:
-        \subitem LPIPS:
-    \item 128x128 box inpainting:
-        \subitem PSNR:
-        \subitem SSIM:
-        \subitem LPIPS:
-\end{list}
-
-
-\begin{list}{-}{ }
-    \item Time:
-    \item SRx4:
-        \subitem PSNR:
-        \subitem SSIM:
-        \subitem LPIPS:
-    \item SRx8:
-        \subitem PSNR:
-        \subitem SSIM:
-        \subitem LPIPS:
-    \item 80\% random inpainting:
-        \subitem PSNR:
-        \subitem SSIM:
-        \subitem LPIPS:
-    \item 128x128 box inpainting:
-        \subitem PSNR:
-        \subitem SSIM:
-        \subitem LPIPS:
-\end{list}
 
 
 \subsubsection{F: Diffusion Posterior Sampling (DPS) for noisy measurements}
@@ -348,8 +400,38 @@ MCG produced
 % performance across noisy conditions? Discuss
 
 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/DPS/SR_x4/recon_3.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/DPS/SR_x8/recon_3.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/DPS/Inpainting_random_80pct/recon_3.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/CelebA_HQ/DPS/Inpainting_box/recon_3.png}
+    \caption{DPS Reconstructions on CelebA-HQ for SRx4, SRx8, 80\% random inpainting, and 128x128 box inpainting with noisy measurements.}
+    \label{fig:dps_celeba}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/DPS/SR_x4/recon_1.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/DPS/SR_x8/recon_1.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/DPS/Inpainting_random_80pct/recon_1.png}
+    \includegraphics[width=0.9\columnwidth]{images/step1_results/ImageNet/DPS/Inpainting_box/recon_1.png}
+    \caption{DPS Reconstructions on ImageNet for SRx4, SRx8, 80\% random inpainting, and 128x128 box inpainting with noisy measurements.}
+    \label{fig:dps_imagenet}
+\end{figure}
+
+This method produced a lot of wav ey artifacts in the super-resolution tasks for both CelebA-HQ and ImageNet. Otherwise, the face is very crisp and believeable in CelebA, whreeas the ImageNet model struggled on super-resolution.
+
+For the random inpainting task, the model removed a lot of the noise, but there was still some in the background of both models. For the ImageNet model, this introduced some artifacts. 
+
+The box inpainting task very bad compared to the first method, where there was sturctured rainbow noise in the box, and it also created noisy patterns in the rest of the image. Image net was a little better on this task, but still had a lot of noise. This is reflected in the PSNR and SSIM values, which were much lower than the original MCG method.
+
+One reason why this may be is that without the projection step, the gradient step may push the image off the data manifold, resulting in noisy images. This is more pronounced given I couldn't find a good weight that produced good results.
+
+
 \begin{list}{-}{ }
     \item Time: 55s
+    \item Weight: 1.0
     \item SRx4:
         \subitem PSNR: 22.94
         \subitem SSIM: 0.7031
@@ -371,6 +453,7 @@ MCG produced
 
 \begin{list}{-}{ }
     \item Time: 177s
+    \item Weight: 1.0
     \item SRx4:
         \subitem PSNR: 13.22
         \subitem SSIM: 0.3813

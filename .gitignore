@@ -18,6 +18,8 @@ __pycache__/
 
 LaTeX/tmp
 
+/LaTeX/main.pdf
+
 # results/
 
 step1_utils/data

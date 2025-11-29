@@ -1,0 +1,126 @@
+\section{Text to image Generation}
+
+\subsection{(A)No Prompt}
+% (a) [2 pts] Run your pipeline using ωCFG = 0.0, η = 0.0 and 50 sampling steps without
+% any positive or negative prompt to make sure everything works (this should give you
+% a meaningful image generated unconditionally).
+
+
+
+\subsection{(B-C) 5X3 prompts- Manual evaluation}
+
+% (b) [6 pts] Create 15 engaging prompts based on 5 unique and different topics (see some
+% examples in (b) figure). For each topic, write three versions of the same idea:
+% 1. Simple and short: a short, clear prompt (about one sentence).
+% 2. Medium: a slightly longer prompt that adds some detail or context.
+% 3. Long and complex: a detailed, imaginative version that expands on the idea
+% with creative or descriptive elements.
+% 2
+% https://huggingface.co/docs/diffusers
+% 6You will end up with 5 topics × 3 versions = 15 prompts in total. Do not rely on
+% LLMs to generate you these prompts and use your creativity to generate interesting
+% prompts that you want to see visualized as images. For each prompt, generate the
+% corresponding SD output. Use ωCFG = 10.0 with 50 sampling steps and η = 0.0. Keep
+% the negative prompt NULL. Finally, assign each generated image a similarity score (out
+% of 10) based on how well it matches the intended prompt (e.g., 5.4/10.0). Share your
+% thoughts. For instance, which version of a prompt typically gave the best similarity
+% or image quality? Does prompt length affect fidelity to the intended concept or the
+% final image quality?
+I implemented a pipeline that will read from a set of prompts, and then use them to generate the images from the diffusers StableDiffusionPipeline module, with the $\omega CFG = 10$, num steps = 50, $eta = 0.0$, and a fixed seed at 42. The prompts for each image are included in the caption of the figures. The results for the five categories that I chose are:
+
+\begin{itemize}
+    \item Space Exploration
+        \begin{itemize}
+            \item Simple: Human: 5/10, CLIP: 28.49
+            \item Medium: Human: 8/10, CLIP: 32.65
+            \item Detailed: Human: 9/10, CLIP: 33.75
+        \end{itemize}
+    \item Underwater World
+        \begin{itemize}
+            \item Simple: Human: 9/10, CLIP: 31.39
+            \item Medium: Human: 6/10, CLIP: 32.93
+            \item Detailed: Human: 5/10, CLIP: 30.34
+        \end{itemize}
+    \item Ancient Architecture
+        \begin{itemize}
+            \item Simple: Human: 8/10, CLIP: 29.36
+            \item Medium: Human: 7/10, CLIP: 31.98
+            \item Detailed: Human: 9/10, CLIP: 30.38
+        \end{itemize}
+    \item Futuristic City
+        \begin{itemize}
+            \item Simple: Human: 8/10, CLIP: 33.70
+            \item Medium: Human: 8/10, CLIP: 34.95
+            \item Detailed: Human: 7/10, CLIP: 29.07
+        \end{itemize}
+    \item Fantasy Creatures
+        \begin{itemize}
+            \item Simple: Human: 2/10, CLIP: 25.97
+            \item Medium: Human: 2/10, CLIP: 27.57
+            \item Detailed: Human: 6/10, CLIP: 37.96
+        \end{itemize}
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_space_exploration_simple.png}
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_space_exploration_medium.png}
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_space_exploration_detailed.png}
+    \caption{Space Exploration. \textbf{Left:} Simple - "An astronaut in space" (Human: 5/10, CLIP: 28.49). \textbf{Center:} Medium - "An astronaut in a spacesuit floating above Earth" (Human: 8/10, CLIP: 32.65). \textbf{Right:} Detailed - "A single astronaut in a shiny white spacesuit drifting serenely against the stars in the sky. There is a silent planet below with swirling clouds and blue oceans, with their ship orbiting in the distance" (Human: 9/10, CLIP: 33.75).}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_underwater_world_simple.png}
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_underwater_world_medium.png}
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_underwater_world_detailed.png}
+    \caption{Underwater World. \textbf{Left:} Simple - "A coral reef" (Human: 9/10, CLIP: 31.39). \textbf{Center:} Medium - "A colorful coral reef with tropical fish of and sunlight filtering through the water" (Human: 6/10, CLIP: 32.93). \textbf{Right:} Detailed - "An underwater coral reef that has all sorts of life, with many fish and sharks swimming around. It has bright corals of all colors and shapes, with sunlight filtering through the clear blue water from above." (Human: 5/10, CLIP: 30.34).}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_ancient_architecture_simple.png}
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_ancient_architecture_medium.png}
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_ancient_architecture_detailed.png}
+    \caption{Ancient Architecture. \textbf{Left:} Simple - "A medieval castle" (Human: 8/10, CLIP: 29.36). \textbf{Center:} Medium - "A lively medieval castle surrounded by a moat and lush greenery" (Human: 7/10, CLIP: 31.98). \textbf{Right:} Detailed - "A beautyful german day, with a large castle made of stone, with a few vines climbing up the spires. The vilage around the castle is full of life, with people walking around the market." (Human: 9/10, CLIP: 30.38).}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_futuristic_city_simple.png}
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_futuristic_city_medium.png}
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_futuristic_city_detailed.png}
+    \caption{Futuristic City. \textbf{Left:} Simple - "A cyberpunk city" (Human: 8/10, CLIP: 33.70). \textbf{Center:} Medium - "A distopian cyberpunk city, with neon lights and flying cars." (Human: 8/10, CLIP: 34.95). \textbf{Right:} Detailed - "A breathtaking cyberpunk megacity that has bustling streets filled with people and vendors. The skyline has many towering skyscrapers, and there are futuristic flying cars." (Human: 7/10, CLIP: 29.07).}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_fantasy_creatures_simple.png}
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_fantasy_creatures_medium.png}
+    \includegraphics[width=0.3\textwidth]{../results/step3_results/part_b/part_b_fantasy_creatures_detailed.png}
+    \caption{Fantasy Creatures. \textbf{Left:} Simple - "A cat with a bird body" (Human: 2/10, CLIP: 25.97). \textbf{Center:} Medium - "A chimera with the body of a cat, wings of a bird." (Human: 2/10, CLIP: 27.57). \textbf{Right:} Detailed - "A beautiful chimera creature that has the body of a maine coon cat, with large majestic wings of an eagle." (Human: 6/10, CLIP: 37.96).}
+\end{figure}
+
+
+
+
+
+% (c) [8 pts] Implement CLIP-based similarity scoring (Radford et al., 2021) to automat-
+% ically evaluate how well each generated image aligns with its corresponding prompt.
+% Conceptually, CLIP computes embeddings for both the image and the text prompt in
+% a shared feature space, and the similarity between them is measured using the cosine
+% of the angle between their embeddings.
+% Similar to SD, you can find different pre-trained CLIP models (and their corresponding
+% model cards with implementation details) in Hugging Face . Compare the CLIP
+% similarity scores with your own manually assigned similarity ratings from the previous
+% step. Discuss any trends, differences, or insights you observe and reflect on how well
+% you believe this metric aligns with human judgment.
+
+
+\subsection{(D) Negative Prompts}
+% (d) [4 pts] Now select one of these 15 prompts and come up with a meaningful negative
+% prompt to feed to SD. Fix number of steps to 50 and η = 0.0 but select ωCFG ∈
+% {0.0, 2.0, 5.0, 8.0, 12.0, 15.0}. Report the generated images and their corresponding
+% CLIP similarity scores. Comment on them.
+
+I chose the prompt: "An astronaut in a spacesuit floating above Earth"
